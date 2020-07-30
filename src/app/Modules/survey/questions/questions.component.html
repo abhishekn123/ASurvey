@@ -1,0 +1,20 @@
+<div class="container" id="que">
+  <mat-card class="text-wrap">
+  <div><h3  style="display: inline;">What is your name?</h3><span>
+    <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+      <mat-icon>edit</mat-icon>
+    </button><mat-menu #menu="matMenu" >
+    <button mat-menu-item (click)="openDialog()" >
+      <mat-icon>edit</mat-icon>
+      <span>Edit</span>
+    </button>
+    <button mat-menu-item >
+      <mat-icon>delete</mat-icon>
+      <span>Delete</span>
+    </button>
+  </mat-menu></span></div>
+  <p>ABCD</p>
+  <p>EFGH</p>
+  <p>Ijkl</p>
+  </mat-card>
+</div>

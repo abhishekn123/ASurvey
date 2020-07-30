@@ -24,6 +24,7 @@
               "src/assets"
             ],
             "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "src/styles.css"
             ],
             "scripts": []
@@ -88,6 +89,7 @@
               "src/assets"
             ],
             "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "src/styles.css"
             ],
             "scripts": []
@@ -119,6 +121,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "IvyInternalApplication-AdminPortal"
+    }
+  },
+  "defaultProject": "IvyInternalApplication-AdminPortal",
+  "cli": {
+    "analytics": "c2e0f61e-8e9a-4772-a41e-52ca20b0c75a"
+  }
 }

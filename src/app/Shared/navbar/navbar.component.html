@@ -1,0 +1,66 @@
+<header>
+    <nav
+      class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow p-0"
+    >
+      <div class="container-fluid pt-0 pb-0">
+        <a
+          class="navbar-brand p-0 mr-0"
+          asp-area=""
+          asp-controller="Home"
+          asp-action="Index"
+        >
+          <img
+            src="https://ivymobility.com/wp-content/uploads/2016/11/rsz_ivy_logo_2016.png"
+            width="70%"
+            height="70%"
+            alt=""
+            id="logo"
+          />
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target=".navbar-collapse"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div
+          class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse"
+        >
+          <!-- <partial name="_LoginPartial" /> -->
+          <ul class="navbar-nav flex-grow-1 p-0">
+            <li class="nav-item pb-2 pt-2 pl-1 pr-1 text-center">
+              <a
+                class="nav-link text-dark"
+                asp-area=""
+                asp-controller="Admin" asp-action="Home">Home</a>
+            </li>
+            <li class="nav-item pl-2 pb-2 pt-2 text-center">
+              <a
+                class="nav-link text-dark"
+                asp-area=""
+                asp-controller="Home"
+                asp-action="Privacy"
+                >Response</a>
+            </li>
+            <li class="nav-item ml-auto" id="GButton">
+              <!-- <div
+                class="g-signin2 social_signin pb-2 pt-2"
+                data-onsuccess="onSignIn"
+              ></div> -->
+              <div *ngIf="loggedIn">
+                <app-profile-component [url]="user.photoUrl" [Email]="user.email"></app-profile-component>
+              </div>
+              <div *ngIf="!loggedIn">
+                <app-google-button></app-google-button>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>

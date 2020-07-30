@@ -1,0 +1,58 @@
+
+@media only screen and (max-width: 575px) {
+  #GButton
+  {
+   margin: 0 auto;
+  }
+  .g-signin2
+  {
+    margin: 0 auto;
+  }
+  .nav-item
+  {
+    margin: 0 auto;
+  }
+  #logo
+  {
+    padding: 8px;
+  }
+  
+  }
+  .nav-item
+  {
+    border-bottom-width: 3px;
+    border-bottom-style: solid;
+    border-color: white;
+  }
+  @media only screen and (min-width: 575px) {
+    .nav-item:hover
+    {
+      border-color: greenyellow;
+    }
+  #GButton
+  {
+    border-color: white;
+  }
+   }
+/* a.navbar-brand {
+  white-space: normal;
+  text-align: center;
+  word-break: break-all;
+} */
+
+/* Provide sufficient contrast against white background */
+a {
+  color: #0366d6;
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
