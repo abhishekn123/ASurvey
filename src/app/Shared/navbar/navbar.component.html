@@ -48,11 +48,7 @@
                 >Response</a>
             </li>
             <li class="nav-item ml-auto" id="GButton">
-              <!-- <div
-                class="g-signin2 social_signin pb-2 pt-2"
-                data-onsuccess="onSignIn"
-              ></div> -->
-              <div *ngIf="loggedIn">
+              <div *ngIf="user">
                 <app-profile-component [url]="user.photoUrl" [Email]="user.email"></app-profile-component>
               </div>
               <div *ngIf="!loggedIn">

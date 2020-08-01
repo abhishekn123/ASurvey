@@ -1,3 +1,5 @@
+import { AlertManagerService } from './../../../Helpers/alert-manager.service';
+import { AuthenticationService } from './../AuthService/authentication.service';
 import { Component, OnInit ,Input} from '@angular/core';
 import { SocialAuthService } from "angularx-social-login";
 @Component({
@@ -9,16 +11,15 @@ export class ProfileComponentComponent implements OnInit {
 
   @Input() url:string
   @Input() Email:string
-  constructor(private authService: SocialAuthService) { }
-
+  constructor(private authService: SocialAuthService,private Auth:AuthenticationService,private Alert:AlertManagerService) { }
   ngOnInit(): void {
+         
   }
   logout():void
   {
-   this.authService.signOut().catch((err)=>
-   {
-     console.log(err)
-   })
+    this.authService.signOut();
+    localStorage.removeItem('Token');
+    this.Alert.openSnackBar('SignedOut Successfully','Done');
   }
 
 }

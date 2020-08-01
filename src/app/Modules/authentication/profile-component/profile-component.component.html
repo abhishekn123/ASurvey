@@ -2,6 +2,6 @@
    <img [src]="url" width="80%" height="85%"/>
   </button>
   <mat-menu #menu="matMenu" >
-    <button mat-menu-item style="outline-color: white;">{{Email}}</button>
+    <button mat-menu-item style="outline-color: white;">{{Email || ''}}</button>
     <button mat-menu-item style="outline-color: white;text-align: center;" (click)="logout()">Logout</button>
   </mat-menu>

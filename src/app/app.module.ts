@@ -1,3 +1,4 @@
+import { MaterialModule } from './material/material.module';
 import { AuthenticationModule } from './Modules/authentication/authentication.module';
 import { SocialAuthService } from 'angularx-social-login';
 import { BrowserModule } from '@angular/platform-browser';
@@ -12,6 +13,7 @@ import {
   GoogleLoginProvider,
 } from 'angularx-social-login';
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -23,12 +25,13 @@ import {
     BrowserAnimationsModule,
     SurveyModule,
     SocialLoginModule,
-    AuthenticationModule
+    AuthenticationModule,
+    MaterialModule
   ],
   providers: [   {
     provide: 'SocialAuthServiceConfig',
     useValue: {
-      autoLogin: false,
+      autoLogin: true,
       providers: [
         {
           id: GoogleLoginProvider.PROVIDER_ID,

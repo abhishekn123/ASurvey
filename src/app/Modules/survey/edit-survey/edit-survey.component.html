@@ -1,0 +1,38 @@
+<div>
+    <div  style="width:100%" >
+      <mat-form-field appearance="outline"  style="width:100%" >
+          <mat-label>Survey Name</mat-label>
+          <input matInput placeholder="Placeholder" [value]="SurveyData.sM_Name" style="width:100%" [(ngModel)]="SurveyData.sM_Name" >
+      </mat-form-field>
+    </div>
+      <div>
+        <mat-form-field  appearance="outline">
+            <mat-label>Start Date</mat-label>
+            <input matInput [matDatepicker]="picker2" [value]="SurveyData.startDate" disabled [min]="todayDate" [(ngModel)]="SurveyData.startDate">
+            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+            <mat-datepicker #picker2 color="primary"  disabled="false"></mat-datepicker>
+          </mat-form-field>
+     </div>
+     <div>
+        <mat-form-field appearance="outline">
+            <mat-label>End Date</mat-label>
+            <input matInput [matDatepicker]="picker3" [value]="SurveyData.endDate" [min]="todayDate" disabled [(ngModel)]="SurveyData.endDate">
+            <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+            <mat-datepicker #picker3 color="primary" disabled="false"></mat-datepicker>
+          </mat-form-field>
+    </div>
+    <div style="width:100%" >
+        <mat-form-field appearance="outline" style="width:100%" >
+            <mat-label>Departments</mat-label>
+            <mat-select [(ngModel)]="SurveyData.departmaster['dm_Id']" name="Department" [(value)]="id">
+              <mat-option *ngFor="let dept of Departments" [value]="dept.dM_Id">
+                {{dept.dM_Name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+    </div>
+    <div class="text-center">
+        <button mat-raised-button color="primary" (click)="UpdateSurvey()">Save</button>
+    </div>
+  </div>
+

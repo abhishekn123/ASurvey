@@ -1,3 +1,4 @@
+import { AlertManagerService } from './../../../Helpers/alert-manager.service';
 import { Component, OnInit, Inject } from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 export interface QuestionData {
@@ -19,7 +20,7 @@ export interface QuestionData {
 })
 export class QuestionsComponent implements OnInit {
 
-  constructor(public dialog: MatDialog) { }
+  constructor(public dialog: MatDialog,private Alert:AlertManagerService) { }
 
   ngOnInit(): void {
   }
@@ -29,6 +30,7 @@ export class QuestionsComponent implements OnInit {
     
     });
   }
+
 }
 
 
