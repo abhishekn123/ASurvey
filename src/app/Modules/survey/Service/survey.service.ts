@@ -26,4 +26,11 @@ export class SurveyService {
   {
     return this.http.get("https://localhost:5001/Admin/GetAllDepartMents");
   }
+
+  SurveyBulkInsert(SurveyData)
+  {
+    console.log("Survey Bulk insert data",SurveyData);
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+     return this.http.post("https://localhost:5001/Admin/BulkInsertSurvey",JSON.parse(SurveyData),{headers:{'Content-Type': 'application/json'}})
+  }
 }

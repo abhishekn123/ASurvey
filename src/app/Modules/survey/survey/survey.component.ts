@@ -28,9 +28,9 @@ export class SurveyComponent implements OnInit {
   }
   GetAllSurveys()
   {
-    this.SurveyService.GetAllSurveys().subscribe(data=>
+    this.SurveyService.GetAllSurveys().subscribe((data:SurveyData[])=>
       {
-      this.SurveyArray=data['survey'];
+      this.SurveyArray=data;
       this.dataSource = new MatTableDataSource<any>(this.SurveyArray); 
       this.dataSource.paginator=this.paginator;
       },err=>
