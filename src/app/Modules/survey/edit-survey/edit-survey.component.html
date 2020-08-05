@@ -1,38 +1,42 @@
 <div>
+  <form  [formGroup]="SurveyFormGroup" (ngSubmit)="UpdateSurvey()">
     <div  style="width:100%" >
       <mat-form-field appearance="outline"  style="width:100%" >
           <mat-label>Survey Name</mat-label>
-          <input matInput placeholder="Placeholder" [value]="SurveyData.sM_Name" style="width:100%" [(ngModel)]="SurveyData.sM_Name" >
+          <input matInput placeholder="Placeholder" formControlName="name" [value]="this.SurveyFormGroup.get('name').value" style="width:100%"  >
       </mat-form-field>
     </div>
       <div>
         <mat-form-field  appearance="outline">
             <mat-label>Start Date</mat-label>
-            <input matInput [matDatepicker]="picker2" [value]="SurveyData.startDate" disabled [min]="todayDate" [(ngModel)]="SurveyData.startDate">
+            <input matInput [matDatepicker]="picker2"  [min]="SurveyData.endDate" formControlName="StartDate"  disabled [min]="todayDate" >
             <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
             <mat-datepicker #picker2 color="primary"  disabled="false"></mat-datepicker>
           </mat-form-field>
      </div>
-     <div>
-        <mat-form-field appearance="outline">
+     <div class="pd-0">
+        <mat-form-field appearance="outline" >
             <mat-label>End Date</mat-label>
-            <input matInput [matDatepicker]="picker3" [value]="SurveyData.endDate" [min]="todayDate" disabled [(ngModel)]="SurveyData.endDate">
+            <input matInput [class.is-invalid]="this.SurveyFormGroup.errors?.MisMatch" [matDatepicker]="picker3"  formControlName="EndDate" [min]="SurveyData.startDate"  [min]="todayDate" disabled >
             <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
             <mat-datepicker #picker3 color="primary" disabled="false"></mat-datepicker>
           </mat-form-field>
+          <mat-error *ngIf="this.SurveyFormGroup.errors?.MisMatch" style="font-size: 12px;text-align: center;">Please Enter Proper date</mat-error>
     </div>
     <div style="width:100%" >
         <mat-form-field appearance="outline" style="width:100%" >
             <mat-label>Departments</mat-label>
-            <mat-select [(ngModel)]="SurveyData.departmaster['dm_Id']" name="Department" [(value)]="id">
+            <mat-select formControlName="Department" name="Department" [(value)]="id">
               <mat-option *ngFor="let dept of Departments" [value]="dept.dM_Id">
                 {{dept.dM_Name}}
               </mat-option>
             </mat-select>
           </mat-form-field>
     </div>
+
     <div class="text-center">
-        <button mat-raised-button color="primary" (click)="UpdateSurvey()">Save</button>
+        <button mat-raised-button color="primary" type="submit" [disabled]="!SurveyFormGroup.valid">Save</button>
     </div>
+  </form>
   </div>
 

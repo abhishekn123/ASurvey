@@ -1,3 +1,6 @@
+import { AlertManagerService } from 'src/app/Helpers/alert-manager.service';
+import { DepartmentIdConverterPipe } from './../../../Pipes/department-id-converter.pipe';
+import { Departments } from './../edit-survey/edit-survey.component';
 import { DeleteSurveyComponent } from './../delete-survey/delete-survey.component';
 import { CreateSurveyComponent } from './../create-survey/create-survey.component';
 import { SurveyService } from './../Service/survey.service';
@@ -8,6 +11,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import {MatIconRegistry} from '@angular/material/icon';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { EditSurveyComponent } from '../edit-survey/edit-survey.component';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 @Component({
   selector: 'app-survey',
   templateUrl: './survey.component.html',
@@ -18,14 +22,28 @@ import { EditSurveyComponent } from '../edit-survey/edit-survey.component';
 
 export class SurveyComponent implements OnInit {
   dataSource;
+  Loading:Boolean;
+  DepartmentsList:Departments[];
    SurveyArray:SurveyData[];
-     constructor(private SurveyService:SurveyService,public dialog: MatDialog) { 
-     
-   
-  }
+     constructor(private SurveyService:SurveyService,public dialog: MatDialog,  private route: Router,private Alert:AlertManagerService) { }
   ngOnInit(): void {
-   this.GetAllSurveys();
+    this.Loading=true;
+    this.GetAllSurveys();
+    this.SurveyService.GetAllDepartments().subscribe((data)=>
+    {
+      console.log(data['departments'])
+      this.Loading=false;
+        this.DepartmentsList=data['departments'];
+    },err=>
+    {
+      this.Loading=false;
+      this.Alert.openSnackBar('Failed To Fetch Departments','ok')
+    })
   }
+   OpenCreateSurveyComponent()
+   {
+    this.route.navigate(['/CreateSurvey']);
+   }
   GetAllSurveys()
   {
     this.SurveyService.GetAllSurveys().subscribe((data:SurveyData[])=>
@@ -42,9 +60,6 @@ export class SurveyComponent implements OnInit {
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
-
- 
-
   GetQuestions(SurveyId)
   {
     console.log(this.dataSource.data)
@@ -53,7 +68,11 @@ export class SurveyComponent implements OnInit {
 
   EditSurvey(Survey)
   {
-    console.log("Edit Survey Id is",Survey.SurveyId);
+    console.log("Edit Survey Start Date is",Survey.startDate);
+    if(!(new Date(Survey.startDate)>new Date()))
+    {
+      return this.Alert.openSnackBar("Only Future Surveys is Editable","OK")
+    }
     const dialogRef=this.dialog.open(EditSurveyComponent,{data:Survey});
     dialogRef.afterClosed().subscribe(result => {
        this.GetAllSurveys();

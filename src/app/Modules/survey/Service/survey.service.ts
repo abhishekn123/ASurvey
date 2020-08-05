@@ -13,7 +13,9 @@ export class SurveyService {
   {
     return this.http.get("https://localhost:5001/Associate/GetAllSurveys");
   }
-
+  createDateAsUTC(date) {
+    return new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), new Date().getHours(), new Date().getMinutes(), new Date().getSeconds(),new Date().getMilliseconds()));
+}
   UpdateSurvey(SurveyMaster)
   {
     return this.http.post("https://localhost:5001/Admin/UpdateSurvey",SurveyMaster)
@@ -29,7 +31,6 @@ export class SurveyService {
 
   SurveyBulkInsert(SurveyData)
   {
-    console.log("Survey Bulk insert data",SurveyData);
     let headers = new Headers({ 'Content-Type': 'application/json' });
      return this.http.post("https://localhost:5001/Admin/BulkInsertSurvey",JSON.parse(SurveyData),{headers:{'Content-Type': 'application/json'}})
   }

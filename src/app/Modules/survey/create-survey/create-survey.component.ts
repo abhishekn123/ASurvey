@@ -95,14 +95,16 @@ export class CreateSurveyComponent implements OnInit {
   postSurvey() {
    console.log(this.surveyForm.valid);
     let formData = this.surveyForm.value;
-    let OptionType:string;
-    let QM_QuestionName:string;
-    let questionMaster=new QuestionMaster(OptionType,QM_QuestionName);
+
+
     let optionMaster=[];
     let QuestionViewModelList=[];
     let surveyQuestions = formData.surveyQuestions;
     let ListOfQuestionViewModel=new ListQuestionViewModel(QuestionViewModelList)
     surveyQuestions.forEach((question, index, array) => {
+      let OptionType:string;
+      let QM_QuestionName:string;
+      let questionMaster=new QuestionMaster(OptionType,QM_QuestionName);
       let questionViewModel= new QuestionViewModel(questionMaster,optionMaster);
         questionViewModel.QuestionMaster.QM_QuestionName=question.questionTitle;
         questionViewModel.QuestionMaster.OptionType= question.questionType;
@@ -117,7 +119,7 @@ export class CreateSurveyComponent implements OnInit {
         ListOfQuestionViewModel.QuestionViewModelList.push(questionViewModel);
     });
     console.log(JSON.stringify({"SurveyMaster":{"SM_Name":this.firstFormGroup.get("SurveyName").value ,"FromDate":this.firstFormGroup.get("StartDate").value,"ToDate":this.firstFormGroup.get("EndDate").value,"DM_ID":1},"QuestionViewModelList":ListOfQuestionViewModel.QuestionViewModelList}));
-    this.BulkInsertSurvey(JSON.stringify({"SurveyMaster":{"SM_Name":this.firstFormGroup.get("SurveyName").value ,"FromDate":this.firstFormGroup.get("StartDate").value,"ToDate":this.firstFormGroup.get("EndDate").value,"DM_ID":1},"QuestionViewModelList":ListOfQuestionViewModel.QuestionViewModelList}))
+    this.BulkInsertSurvey(JSON.stringify({"SurveyMaster":{"SM_Name":this.firstFormGroup.get("SurveyName").value ,"StartDate":this.SurveyService.createDateAsUTC(this.firstFormGroup.get("StartDate").value),"EndDate":this.SurveyService.createDateAsUTC(this.firstFormGroup.get("EndDate").value),"DM_ID":1},"QuestionViewModelList":ListOfQuestionViewModel.QuestionViewModelList}))
   }
   //---------------------------------------------------------------//
   onSubmit() {
@@ -128,6 +130,7 @@ export class CreateSurveyComponent implements OnInit {
   secondFormGroup: FormGroup;
   OptionFormGroup:FormGroup;
   todayDate:Date = new Date();
+  presentDate:Date=new Date();
   nextDate:Date=this.todayDate;
   constructor(private _formBuilder: FormBuilder,private SurveyService:SurveyService,private Alertmanager:AlertManagerService ) {
    }
@@ -135,7 +138,6 @@ export class CreateSurveyComponent implements OnInit {
    SelectedDepartmentId:number;
    SurveyData:SurveyData;
    OptionTypes:string[]=["RadioButton","CheckBox","DropDown","List"];
-   OptionCount:number[]=[1,2,3,4,5,6,7,8,9,10];
    SelectedOptionType:string;
    SelectedOptionCount:number=0;
    t=false;
