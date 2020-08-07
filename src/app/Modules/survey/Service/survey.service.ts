@@ -2,16 +2,23 @@ import { SurveyData } from './../survey/survey.component';
 
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Departments } from '../edit-survey/edit-survey.component';
 @Injectable({
   providedIn: 'root'
 })
 export class SurveyService {
 
-  constructor(private http:HttpClient) { }
+  constructor(private http:HttpClient) {
+    this.GetAllDepartments().subscribe(data=>
+      {
+        this.Departments=data['departments']
+      })
+   }
    SurveyData:SurveyData[];
+   Departments:Departments[];
   GetAllSurveys()
   {
-    return this.http.get("https://localhost:5001/Associate/GetAllSurveys");
+    return this.http.get("https://localhost:5001/Admin/GetSurveyList");
   }
   createDateAsUTC(date) {
     return new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), new Date().getHours(), new Date().getMinutes(), new Date().getSeconds(),new Date().getMilliseconds()));

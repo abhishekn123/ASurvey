@@ -1,3 +1,5 @@
+import { httpInterceptorProviders } from './Interceptor/InterceptorProvider';
+import { AuthenticatonInterceptor } from './Interceptor/authenticaton.interceptor';
 import { MaterialModule } from './material/material.module';
 import { AuthenticationModule } from './Modules/authentication/authentication.module';
 import { SocialAuthService } from 'angularx-social-login';
@@ -12,6 +14,7 @@ import { SocialLoginModule, SocialAuthServiceConfig } from 'angularx-social-logi
 import {
   GoogleLoginProvider,
 } from 'angularx-social-login';
+import { JwtModule } from "@auth0/angular-jwt";
 
 
 @NgModule({
@@ -26,7 +29,8 @@ import {
     SurveyModule,
     SocialLoginModule,
     AuthenticationModule,
-    MaterialModule
+    MaterialModule,
+    JwtModule
   ],
   providers: [   {
     provide: 'SocialAuthServiceConfig',
@@ -38,10 +42,9 @@ import {
           provider: new GoogleLoginProvider(
             '782740102672-mfc1do9oq50mpedecc92fmiu981ks69n.apps.googleusercontent.com'
           ),
-        },
-      ],
+        },],
     } as SocialAuthServiceConfig,
-  }],
+  },httpInterceptorProviders],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

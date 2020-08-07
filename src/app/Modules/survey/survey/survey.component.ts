@@ -12,6 +12,7 @@ import {MatIconRegistry} from '@angular/material/icon';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { EditSurveyComponent } from '../edit-survey/edit-survey.component';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
 @Component({
   selector: 'app-survey',
   templateUrl: './survey.component.html',
@@ -25,20 +26,13 @@ export class SurveyComponent implements OnInit {
   Loading:Boolean;
   DepartmentsList:Departments[];
    SurveyArray:SurveyData[];
-     constructor(private SurveyService:SurveyService,public dialog: MatDialog,  private route: Router,private Alert:AlertManagerService) { }
+     constructor(private SurveyService:SurveyService,public dialog: MatDialog,  private route: Router,private Alert:AlertManagerService) { 
+     
+     }
   ngOnInit(): void {
     this.Loading=true;
+    this.DepartmentsList=this.SurveyService.Departments;
     this.GetAllSurveys();
-    this.SurveyService.GetAllDepartments().subscribe((data)=>
-    {
-      console.log(data['departments'])
-      this.Loading=false;
-        this.DepartmentsList=data['departments'];
-    },err=>
-    {
-      this.Loading=false;
-      this.Alert.openSnackBar('Failed To Fetch Departments','ok')
-    })
   }
    OpenCreateSurveyComponent()
    {
@@ -48,11 +42,13 @@ export class SurveyComponent implements OnInit {
   {
     this.SurveyService.GetAllSurveys().subscribe((data:SurveyData[])=>
       {
+        this.Loading=false;
       this.SurveyArray=data;
       this.dataSource = new MatTableDataSource<any>(this.SurveyArray); 
       this.dataSource.paginator=this.paginator;
       },err=>
       {
+        this.Loading=false;
         console.log(err);
       })
   }

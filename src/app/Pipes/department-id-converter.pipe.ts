@@ -1,22 +1,20 @@
-import { Departments } from './../Modules/survey/edit-survey/edit-survey.component';
-import { Pipe, PipeTransform } from '@angular/core';
+import { Pipe, PipeTransform, OnInit } from '@angular/core';
+import { SurveyService } from '../Modules/survey/Service/survey.service';
+import { Departments } from '../Modules/survey/edit-survey/edit-survey.component';
 
 @Pipe({
-  name: 'departmentIdConverter'
+  name: 'departmentIdConverter',
+  pure: false
 })
-export class DepartmentIdConverterPipe implements PipeTransform {
+export class DepartmentIdConverterPipe implements PipeTransform,OnInit {
 
-  transform(DepartmentId,DeptList): string {
-       
-    console.log('pipe Department ID',DepartmentId,'pipe Departments',DeptList)
-       for(var dept of DeptList)
-       {
-           if(dept.dM_Id===DepartmentId)
-           {
-             return dept.dM_Name;
-           }
-       }
-       return null;
+  constructor(private DepartmentService:SurveyService){ }
+  deptList:Departments[];
+  ngOnInit(): void {
+  }
+  transform(DepartmentId): string {
+    
+    return this.DepartmentService.Departments.find(exp=>exp.dM_Id===DepartmentId).dM_Name
 
   }
 

@@ -20,6 +20,7 @@ export class ProfileComponentComponent implements OnInit {
     this.authService.signOut();
     localStorage.removeItem('Token');
     this.Alert.openSnackBar('SignedOut Successfully','Done');
+    console.log('logout state',this.authService.authState)
   }
 
 }

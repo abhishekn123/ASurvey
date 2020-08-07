@@ -1,3 +1,4 @@
+import { AuthenticationGuard } from './Guards/authentication.guard';
 import { CreateSurveyComponent } from './Modules/survey/create-survey/create-survey.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
@@ -7,7 +8,9 @@ const routes: Routes = [
   {path:'Home',
 component:SurveyComponent},
 {path:'CreateSurvey',
-component:CreateSurveyComponent}
+component:CreateSurveyComponent,
+canActivate:[AuthenticationGuard],
+}
 ];
 
 @NgModule({

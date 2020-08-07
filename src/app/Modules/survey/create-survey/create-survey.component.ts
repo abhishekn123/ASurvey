@@ -16,6 +16,7 @@ import {  QuestionMaster, OptionMaster, QuestionViewModel, ListQuestionViewModel
 export class CreateSurveyComponent implements OnInit {
   surveyForm: FormGroup;
   selectedOption = [];
+  Loader:Boolean;
   questions: QuestionType[] = [
     { value: 'RadiButton', viewValue: 'RadiButton' },
     { value: 'CheckBox', viewValue: 'CheckBox' },
@@ -143,6 +144,7 @@ export class CreateSurveyComponent implements OnInit {
    t=false;
    
   ngOnInit(): void {
+    this.Loader=false;
     this.initForm();
       this.SurveyService.GetAllDepartments().subscribe(data=>
         {
@@ -166,12 +168,13 @@ export class CreateSurveyComponent implements OnInit {
 
   BulkInsertSurvey(SurveyData)
   {
+    this.Loader=true;
     console.log('Bulk Insert Called')
     this.SurveyService.SurveyBulkInsert(SurveyData).subscribe(data=>
-      {
-        this.Alertmanager.openSnackBar("Survey Is Live Now","OK")
+      { this.Loader=true;
+        this.Alertmanager.openSnackBar("Survey Created SucessFully","OK")
       },err=>
-      {
+      { this.Loader=true;
         this.Alertmanager.openSnackBar("Something Went Wrong","OK")
       })
   }

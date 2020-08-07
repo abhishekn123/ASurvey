@@ -13,4 +13,8 @@ export class AuthenticationService {
   {
     return this.http.post("https://localhost:5001/Users/Authenticate",{'Token_Id':Token_Id})
   }
+
+  getToken():string{
+    return localStorage.getItem('Token');
+  }
 }

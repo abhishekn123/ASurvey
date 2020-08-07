@@ -15,6 +15,7 @@ import {
 export class GoogleButtonComponent implements OnInit {
   constructor(private authService:SocialAuthService,private Auth:AuthenticationService,private Alert:AlertManagerService) { }
   signInWithGoogle(): void {
+    console.log("Login state inside SignInWith Google",this.authService.authState)
     this.authService.signIn(GoogleLoginProvider.PROVIDER_ID).then(x => 
       {
         this.Auth.AuthenticateUser(x.idToken).subscribe(data=>
@@ -22,12 +23,13 @@ export class GoogleButtonComponent implements OnInit {
               localStorage.setItem('Token',data['token']);
           },err=>
           {
-            console.log(err);
+            console.log('err',err);
             this.Alert.openSnackBar('UnAuthorized Access','Ok')
             this.authService.signOut();
           })
       }).catch(err=>
       {
+        console.log('err',err);
         this.Alert.openSnackBar('Login Failed','Ok')
         this.authService.signOut();
       });
