@@ -1,3 +1,13 @@
+<h1>Question Component Works</h1>
 
-
- 
+ <button mat-raised-button (click)="StartAssigning()">START</button>
+<div *ngFor="let quegroup of QuestionGroup;let QuestionIndex=index">
+    <h1>{{quegroup.get('QuestionName').value}}</h1>
+    <button mat-button (click)="RemoveQuestion(QuestionIndex)">Remove</button>
+<div *ngFor="let que of quegroup.get('OptionMaster')['controls'];let OptionIndex  = index">
+  {{que.value.OptionName}}
+  <button mat-button (click)="RemoveOption(QuestionIndex,OptionIndex)">Remove</button>
+</div>
+<button mat-button (click)="UpdateQuestion(QuestionIndex)">Update</button>
+</div>
+<button mat-raised-button (click)="BulkUpdate()">Bulk Update</button>
