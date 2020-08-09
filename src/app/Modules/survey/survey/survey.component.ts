@@ -60,6 +60,7 @@ export class SurveyComponent implements OnInit {
   {
     console.log(this.dataSource.data)
     console.log('Survey Id is',SurveyId);
+    this.route.navigate(["/Questions"])
   }
 
   EditSurvey(Survey)

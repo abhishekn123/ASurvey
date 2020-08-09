@@ -21,11 +21,6 @@ export class QuestionsComponent implements OnInit {
   constructor(private Alert:AlertManagerService,private _formBuilder: FormBuilder) { }
   Questions:QuestionData[];
   QuestionGroup:FormGroup[]=[]
-  RemoveOption(QuestionIndex,OptionIndex)
-  {
-  console.log(this.QuestionGroup[QuestionIndex].get('OptionMaster')['controls'].splice(OptionIndex,1))
-  // this.QuestionGroup[QuestionIndex].get('OptionAmster').value=this.QuestionGroup[QuestionIndex].get('OptionMaster').value;
-  }
   ngOnInit(): void {
     this.Questions=[ {
       'QuestionId':'1',
@@ -45,6 +40,7 @@ export class QuestionsComponent implements OnInit {
             {'OptionId':'3','OptionName':'Z'},
       ] 
         }]
+        this.StartAssigning()
   }
    StartAssigning()
    { let que:FormGroup;
@@ -55,13 +51,13 @@ export class QuestionsComponent implements OnInit {
       {  
         let OptionArray=new FormArray([]);
         que= this._formBuilder.group({
-          'QuestionId':new FormControl(question.QuestionId,Validators.required),
-          'QuestionName':new FormControl(question.QuestionName,Validators.required),
+          'QuestionId':new FormControl(question.QuestionId,[Validators.required]),
+          'QuestionName':new FormControl(question.QuestionName,[Validators.required]),
           // 'OptionMaster':new FormGroup({})
         });
         question.OptionMaster.map((option,index)=>
         {
-          let OptionMaster= new FormControl(option,Validators.required);
+          let OptionMaster= new FormControl(option.OptionName,[Validators.required]);
            OptionArray.push(OptionMaster);
         })
         que.registerControl("OptionMaster",OptionArray);
@@ -87,8 +83,28 @@ let data =  {
    {
      for(var question of this.QuestionGroup)
      {
-       console.log(question.value)
+       console.log('Bulk value',question.value)
+        for (var option of question.get('OptionMaster')['controls'])
+        {
+          console.log({"QuestionName":question.get('QuestionName').value,'OptionMaster':{opt:option.value}})
+        }
      }
+   }
+   AddOption(QuestionIndex)
+   {
+    //  console.log(this.QuestionGroup[QuestionIndex].get('OptionMaster')['controls'].unshift(new FormControl('',[Validators.required])))
+     console.log(this.QuestionGroup[QuestionIndex].get('OptionMaster')['controls'].unshift(new FormControl('',[Validators.required])))
+     console.log(this.QuestionGroup[QuestionIndex].get('OptionMaster').value)
+     console.log(this.QuestionGroup[QuestionIndex])
+   }
+   RemoveOption(QuestionIndex,OptionIndex)
+   {
+    if(this.QuestionGroup[QuestionIndex].get('OptionMaster')['controls'].length===2)
+    {
+      this.RemoveQuestion(QuestionIndex);
+      return;
+    }
+   this.QuestionGroup[QuestionIndex].get('OptionMaster')['controls'].splice(OptionIndex,1);
    }
 }
 

@@ -1,13 +1,40 @@
-<h1>Question Component Works</h1>
 
- <button mat-raised-button (click)="StartAssigning()">START</button>
-<div *ngFor="let quegroup of QuestionGroup;let QuestionIndex=index">
-    <h1>{{quegroup.get('QuestionName').value}}</h1>
-    <button mat-button (click)="RemoveQuestion(QuestionIndex)">Remove</button>
-<div *ngFor="let que of quegroup.get('OptionMaster')['controls'];let OptionIndex  = index">
-  {{que.value.OptionName}}
-  <button mat-button (click)="RemoveOption(QuestionIndex,OptionIndex)">Remove</button>
+<div class="container mt-3">
+<mat-card style="width: 100%;" class="text-center">
+<div *ngFor="let quegroup of QuestionGroup;let QuestionIndex=index" style="width: 100%;">
+  <mat-card style="margin-top: 20px;width: 80%;" class="mx-auto pt-0 text-left">
+    <div class="row">
+      <div class="col pl-0">
+        <span class="text-left mr-auto p-2" style="background-color: yellowgreen;">{{QuestionIndex+1}}</span>
+      </div>
+      <div class="col" class="text-right pr-1 pb-1">
+        <button mat-mini-fab color="warn" (click)="RemoveQuestion(QuestionIndex)"  >
+          <mat-icon>clear</mat-icon>
+        </button> 
+      </div>
+    </div>
+<form [formGroup]="quegroup">
+   <mat-form-field  style="width: 100%;" appearance="outline">
+    <mat-label>Question Name</mat-label>
+    <input  formControlName="QuestionName" maxlength="200" matInput placeholder="Question title"
+      [required]="true">
+      <mat-error>Question Name Required</mat-error>
+  </mat-form-field>
+  <button  (click)="AddOption(QuestionIndex)" mat-raised-button color="primary" style="text-align: left;" class="text-left mr-aut0">Add Option</button>
+   <div *ngFor="let option of quegroup.get('OptionMaster')['controls'];let OptionIndex=index">
+   <form formArrayName="OptionMaster" class="text-right ml-auto">
+    <mat-form-field  style="width: 100%; margin-top: 5px;" appearance="outline">
+      <mat-label>OptionName</mat-label>
+      <input [formControlName]="OptionIndex" maxlength="200" matInput placeholder="Option title"
+        [required]="true">
+        <mat-error>Option Name Required</mat-error>
+    </mat-form-field>
+    <button  (click)="RemoveOption(QuestionIndex,OptionIndex)" mat-raised-button color="accent">Remove</button>
+   </form>
+  </div>
+</form>
+</mat-card>
 </div>
-<button mat-button (click)="UpdateQuestion(QuestionIndex)">Update</button>
+<button mat-raised-button (click)="BulkUpdate()" class="mt-3" color="primary" >Update Questions</button>
+</mat-card>
 </div>
-<button mat-raised-button (click)="BulkUpdate()">Bulk Update</button>
