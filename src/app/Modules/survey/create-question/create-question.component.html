@@ -1,0 +1,37 @@
+<form [formGroup]="Question">
+    <div  style="width:100%" >
+        <mat-form-field appearance="outline"  style="width:100%" >
+            <mat-label>Survey Name</mat-label>
+            <input matInput placeholder="Placeholder" style="width:100%" formControlName="QuestionName"  >
+            <mat-error>Survey name Required</mat-error>
+        </mat-form-field>
+      </div>
+      <div style="width:100%" >
+        <mat-form-field  style="width: 100%;" appearance="outline">
+            <mat-select  placeholder="Question type" ng-model="myVar" 
+          [required]="true" formControlName="QuestionType" >
+              <mat-option *ngFor="let type of questions" [value]="type.value">
+                {{type.viewValue}}
+              </mat-option>
+            </mat-select>
+            <mat-error>Please select Optiontype</mat-error>
+          </mat-form-field>
+    </div>
+    <div *ngIf="Question.get('QuestionType').value!='TextBox' && Question.get('QuestionType').value!='' ">
+    <div *ngFor="let option of Question.get('OptionMaster')['controls'];let i = index">
+        <div formArrayName="OptionMaster">
+        <mat-form-field appearance="outline"  style="width:100%" >
+            <mat-label>Option Name</mat-label>
+            <input matInput placeholder="Placeholder" style="width:100%" formControlName={{i}}  >
+            <mat-error>Option name Required</mat-error>
+        </mat-form-field>
+    </div>
+   </div>
+    </div>
+    <div *ngIf="Question.get('QuestionType').value!='TextBox' && Question.get('QuestionType').value!='' " >
+        <button mat-raised-button type="button" (click)="addOption()" class="mat-sm-button add-option-btn" color="accent"  > Add option</button>
+    </div>
+    <div *ngIf="Question.get('QuestionType').value ==='TextBox' ||Question.get('QuestionName').valid " style="width: 100%;" class="text-center">
+        <button mat-raised-button type="button" (click)="addOption()" class="mat-sm-button add-option-btn mt-2" color="primary" [disabled]="!Question.get('QuestionName').valid || !Question.get('OptionMaster').valid " >Create</button>
+    </div>
+</form>

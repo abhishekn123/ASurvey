@@ -18,7 +18,7 @@ export class CreateSurveyComponent implements OnInit {
   selectedOption = [];
   Loader:Boolean;
   questions: QuestionType[] = [
-    { value: 'RadiButton', viewValue: 'RadiButton' },
+    { value: 'RadioButton', viewValue: 'RadioButton' },
     { value: 'CheckBox', viewValue: 'CheckBox' },
     { value: 'DropDown', viewValue: 'DropDown' },
     { value: 'List', viewValue: 'List' }
@@ -96,8 +96,6 @@ export class CreateSurveyComponent implements OnInit {
   postSurvey() {
    console.log(this.surveyForm.valid);
     let formData = this.surveyForm.value;
-
-
     let optionMaster=[];
     let QuestionViewModelList=[];
     let surveyQuestions = formData.surveyQuestions;

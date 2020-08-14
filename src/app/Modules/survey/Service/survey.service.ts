@@ -1,3 +1,5 @@
+import { CreateOptionModel } from './../Models/OptionCreateModel';
+import { OptionServerData } from './../questions/questions.component';
 import { SurveyData } from './../survey/survey.component';
 
 import { Injectable } from '@angular/core';
@@ -40,5 +42,22 @@ export class SurveyService {
   {
     let headers = new Headers({ 'Content-Type': 'application/json' });
      return this.http.post("https://localhost:5001/Admin/BulkInsertSurvey",JSON.parse(SurveyData),{headers:{'Content-Type': 'application/json'}})
+  }
+   
+  GetSurveyQuestions(SM_Id:number)
+  {
+    return this.http.post("https://localhost:5001/Admin/Questions",{SM_Id},{headers:{'Content-Type': 'application/json'}})
+  }
+
+  CreateOption(data:CreateOptionModel)
+  {
+    console.log(data)
+    return this.http.post("https://localhost:5001/Admin/CreateOption",data,{headers:{'Content-Type': 'application/json'}})
+  }
+
+  RemoveOption(data)
+  {
+    console.log(data)
+    return this.http.post("https://localhost:5001/Admin/RemoveOption",JSON.stringify(data),{headers:{'Content-Type': 'application/json'}})
   }
 }

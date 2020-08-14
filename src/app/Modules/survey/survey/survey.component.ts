@@ -22,7 +22,9 @@ import { HttpErrorResponse } from '@angular/common/http';
 
 
 export class SurveyComponent implements OnInit {
-  dataSource;
+  dataSource ;
+  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+  @ViewChild(MatSort, {static:true}) sort: MatSort;
   Loading:Boolean;
   DepartmentsList:Departments[];
    SurveyArray:SurveyData[];
@@ -31,8 +33,8 @@ export class SurveyComponent implements OnInit {
      }
   ngOnInit(): void {
     this.Loading=true;
-    this.DepartmentsList=this.SurveyService.Departments;
     this.GetAllSurveys();
+    this.DepartmentsList=this.SurveyService.Departments;
   }
    OpenCreateSurveyComponent()
    {
@@ -40,7 +42,7 @@ export class SurveyComponent implements OnInit {
    }
   GetAllSurveys()
   {
-    this.SurveyService.GetAllSurveys().subscribe((data:SurveyData[])=>
+     this.SurveyService.GetAllSurveys().subscribe((data:SurveyData[])=>
       {
         this.Loading=false;
       this.SurveyArray=data;
@@ -54,8 +56,7 @@ export class SurveyComponent implements OnInit {
   }
   displayedColumns: string[] = ['SurveyName', 'StartDate', 'EndDate', 'Department','Action'];
 
-  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
-  @ViewChild(MatSort, {static: true}) sort: MatSort;
+
   GetQuestions(SurveyId)
   {
     console.log(this.dataSource.data)

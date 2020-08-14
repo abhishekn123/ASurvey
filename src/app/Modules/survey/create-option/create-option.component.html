@@ -1,0 +1,15 @@
+<form [formGroup]="Option" >
+<div style="width:100%"  >
+    <div  style="width:100%" >
+        <mat-form-field appearance="outline"  style="width:100%" >
+            <mat-label>Option Name</mat-label>
+            <input matInput placeholder="Placeholder" formControlName="OptionValue"  style="width:100%"  >
+            <mat-error>Option Name Is Required</mat-error>
+        </mat-form-field>
+      </div>
+</div>
+
+<div class="text-center">
+    <button mat-raised-button color="primary" type="submit" [disabled]="this.Option.invalid" (click)="CreateOption()">Save</button>
+</div>
+</form>

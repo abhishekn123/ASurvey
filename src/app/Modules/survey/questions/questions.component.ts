@@ -1,110 +1,171 @@
-import { AlertManagerService } from './../../../Helpers/alert-manager.service';
-import { Component, OnInit, Inject } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, FormControl, FormArray } from '@angular/forms';
-import { OptionMaster } from '../create-survey/data-model';
-export interface QuestionData {
-   QuestionId:string,
-   QuestionName:string,
-   OptionMaster:OptionData[],
-}
-export interface OptionData
-{
-  OptionId:string,OptionName:string
-}
+import { CreateQuestionComponent } from './../create-question/create-question.component';
+import { CreateOptionModel } from './../Models/OptionCreateModel';
+import { CreateOptionComponent } from './../create-option/create-option.component';
+import { DeleteOptionComponent } from './../delete-option/delete-option.component';
 
+import { SurveyService } from './../Service/survey.service';
+import { AlertManagerService } from './../../../Helpers/alert-manager.service';
+import { Component, OnInit, Inject, AfterViewChecked } from '@angular/core';
+import { FormGroup, FormBuilder, Validators, FormControl, FormArray } from '@angular/forms';
+import {MatDialog} from '@angular/material/dialog';
 @Component({
   selector: 'app-questions',
   templateUrl: './questions.component.html',
   styleUrls: ['./questions.component.css']
 })
 export class QuestionsComponent implements OnInit {
-  constructor(private Alert:AlertManagerService,private _formBuilder: FormBuilder) { }
-  Questions:QuestionData[];
+  constructor(public dialog: MatDialog,private Alert:AlertManagerService,private _formBuilder: FormBuilder,private SurveyService:SurveyService) { }
+  QuestionsFromServerArray=[];
   QuestionGroup:FormGroup[]=[]
-  ngOnInit(): void {
-    this.Questions=[ {
-      'QuestionId':'1',
-      'QuestionName':'What is your Age',
-        'OptionMaster':[
-          {'OptionId':'1','OptionName':'21'},
-          {'OptionId':'2','OptionName':'22'},
-          {'OptionId':'3','OptionName':'25'},
-          {'OptionId':'4','OptionName':'32'}
-    ] 
-      },{
-        'QuestionId':'2',
-        'QuestionName':'What is your name',
-          'OptionMaster':[
-            {'OptionId':'1','OptionName':'X'},
-            {'OptionId':'2','OptionName':'Y'},
-            {'OptionId':'3','OptionName':'Z'},
-      ] 
-        }]
-        this.StartAssigning()
-  }
-   StartAssigning()
-   { let que:FormGroup;
-
-
-     console.log('Sarted Assigning')
-     this.Questions.map((question,index)=>
-      {  
-        let OptionArray=new FormArray([]);
-        que= this._formBuilder.group({
-          'QuestionId':new FormControl(question.QuestionId,[Validators.required]),
-          'QuestionName':new FormControl(question.QuestionName,[Validators.required]),
-          // 'OptionMaster':new FormGroup({})
-        });
-        question.OptionMaster.map((option,index)=>
-        {
-          let OptionMaster= new FormControl(option.OptionName,[Validators.required]);
-           OptionArray.push(OptionMaster);
-        })
-        que.registerControl("OptionMaster",OptionArray);
-        this.QuestionGroup.push(que);
+  QuestionsFromServer:QuestionServerViewModel[];
+  IsUpdateDisabled:Boolean;
+  GetSurveyQuestions(SurveyId:number)
+  {
+    this.SurveyService.GetSurveyQuestions(SurveyId).subscribe(data=>
+      {
+        this.QuestionsFromServer=<QuestionServerViewModel[]>data;
+        console.log('Questions From Server',this.QuestionsFromServer)
+        this.initServerDate()
+      },err=>
+      {
+        console.log(err);
       })
-     console.log('Question Group',this.QuestionGroup);
+  }
+  // -------------------------------------------------------------//
+  initServerDate()
+  {
+    let que:FormGroup;
+   for(var question of this.QuestionsFromServer)
+   {{}
+     console.log('Each Question',question);
+    que=this._formBuilder.group({
+      'SurveId':new FormControl(question.sM_Id,[Validators.required]),
+      'QuestionId':new FormControl(question.questionMaster.qM_Id,[Validators.required]),
+      'QuestionName':new FormControl(question.questionMaster.qM_QuestionName,[Validators.required]),
+      'OptionMaster':new FormArray([],[Validators.required])
+    })
+    console.log('OptionMaster',question['optionMaster'])
+  
+    for(var option of question.optionMaster)
+      {
+        let OptionsGroup=new FormGroup({},[Validators.required]);
+        console.log('Each Option',option.oM_Id);
+        OptionsGroup.registerControl('options',new FormControl(option.options,[Validators.required]));
+        OptionsGroup.registerControl('qM_Id',new FormControl(option.qM_Id,[Validators.required]));
+        OptionsGroup.registerControl('oM_Id',new FormControl(option.oM_Id,[Validators.required]));
+        <FormArray>que.controls['OptionMaster']['controls'].push(OptionsGroup)
+      }
+      this.QuestionsFromServerArray.push(que);
    }
+
+   console.log("Question from Server Array",this.QuestionsFromServerArray)
+  }
+    // -------------------------------------------------------------//
+  ngOnInit(): void {
+    this.GetSurveyQuestions(1);
+  }
+    // -------------------------------------------------------------//
    RemoveQuestion(QuestionIndex)
    {
-     console.log(QuestionIndex);
-     this.QuestionGroup.splice(QuestionIndex,1);
+     console.log(this.QuestionsFromServerArray[QuestionIndex])
+     this.QuestionsFromServerArray.splice(QuestionIndex,1);
    }
-   UpdateQuestion(questionIndex)
+     // -------------------------------------------------------------//
+   UpdateQuestion(questionIndex,optionIndex)
    {
-let data =  {
-       QuestionName:this.QuestionGroup[questionIndex].get('QuestionName').value,
-       OptionMaster:[...this.QuestionGroup[questionIndex].get('OptionMaster').value]
-     }
-     console.log('updted data',data)
+       for(var item of this.QuestionsFromServerArray[questionIndex].controls['OptionMaster'].controls )
+       {
+         if(item.invalid)
+         {
+           this.Alert.openSnackBar("All Feild Are Compulsory","Ok");
+           break;
+         }
+         console.log(item.value);
+       }
    }
-
+  // -------------------------------------------------------------//
    BulkUpdate()
    {
-     for(var question of this.QuestionGroup)
+     let avr=[];
+     console.log(this.QuestionsFromServerArray)
+     for(var question of this.QuestionsFromServerArray)
      {
-       console.log('Bulk value',question.value)
-        for (var option of question.get('OptionMaster')['controls'])
-        {
-          console.log({"QuestionName":question.get('QuestionName').value,'OptionMaster':{opt:option.value}})
+       let data;
+       console.log('Question Valid',question.valid)
+       if(question.get('OptionMaster').valid && question.valid)
+       {
+        data ={
+          "sM_Id":question.get('SurveId').value,
+          "qM_Id":question.get('QuestionId').value,
+          "QuestionName":question.get('QuestionName').value,
+          "OptionMaster":[]
         }
+        for(let option of question.get('OptionMaster')['controls'])
+        {
+           data.OptionMaster.push({'options':option.value})
+        }
+       }
+       else{
+        console.log(false,'condition');
+        this.Alert.openSnackBar("All Feilds Are Compulsory","ok")
+        return ;
+       }
+       avr.push(data);
      }
+     console.log(avr)
    }
-   AddOption(QuestionIndex)
+     // -------------------------------------------------------------//
+   AddOption(SurveyId,QuestionId)
    {
-    //  console.log(this.QuestionGroup[QuestionIndex].get('OptionMaster')['controls'].unshift(new FormControl('',[Validators.required])))
-     console.log(this.QuestionGroup[QuestionIndex].get('OptionMaster')['controls'].unshift(new FormControl('',[Validators.required])))
-     console.log(this.QuestionGroup[QuestionIndex].get('OptionMaster').value)
-     console.log(this.QuestionGroup[QuestionIndex])
+     console.log(typeof SurveyId,typeof QuestionId)
+     let OptionViewModel:CreateOptionModel= new CreateOptionModel();
+      let OptionMaster:OptionServerData= new OptionServerData()
+      OptionMaster.qM_Id=QuestionId;
+      OptionViewModel.sM_id=SurveyId;
+      OptionMaster.options="";
+      OptionViewModel.OptionMaster=OptionMaster;
+    const dialogRef=this.dialog.open(CreateOptionComponent,{data:OptionViewModel});
+    dialogRef.afterClosed().subscribe(result => {
+      this.SurveyService.GetSurveyQuestions(1).subscribe();
+    })
    }
-   RemoveOption(QuestionIndex,OptionIndex)
+     // -------------------------------------------------------------//
+   RemoveOption(SurveyId,QuestionId,OptionId)
    {
-    if(this.QuestionGroup[QuestionIndex].get('OptionMaster')['controls'].length===2)
-    {
-      this.RemoveQuestion(QuestionIndex);
-      return;
-    }
-   this.QuestionGroup[QuestionIndex].get('OptionMaster')['controls'].splice(OptionIndex,1);
+     console.log(this.QuestionsFromServerArray[0].controls['OptionMaster'].value)
+     console.log(SurveyId,QuestionId,OptionId);
+    const dialogRef=this.dialog.open(DeleteOptionComponent,{data:{"QuestionId":QuestionId,"OptionId":OptionId,"SurveyId":SurveyId}});
+    dialogRef.afterClosed().subscribe(result => {
+       console.log('Delete Option reference closed')
+       this.SurveyService.GetSurveyQuestions(1).subscribe(data=>{});
+    });
    }
+     // -------------------------------------------------------------//
+  AddQuestion()
+  {
+    const dialogRef=this.dialog.open(CreateQuestionComponent);
+    dialogRef.afterClosed().subscribe(result => {
+       console.log('Add Question reference closed')
+    });
+  }
+  //-----------------------------------------------------------------//
 }
 
+export interface QuestionServerData{
+optionType:string;
+qM_Id:number;
+qM_QuestionName:string;
+sM_Id:number;
+surveyMaster:object;
+}
+export class OptionServerData{
+  public oM_Id:number;
+  public questionMaster:Object;
+  public qM_Id:number;
+  public options:string
+}
+export class  QuestionServerViewModel{
+   public sM_Id:number;
+  public questionMaster:QuestionServerData;
+  public optionMaster:OptionServerData[];
+}

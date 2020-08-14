@@ -1,6 +1,6 @@
 <div class="container mt-5 mb-5" >
 <mat-spinner *ngIf="Loading" style="text-align: center;margin:50px auto"></mat-spinner>
-<div class="mat-elevation-z8" *ngIf="!Loading" >
+<div class="mat-elevation-z8" [hidden]="Loading" >
     <table mat-table [dataSource]="dataSource">
       <!-- SurveyName Column -->
       <ng-container matColumnDef="SurveyName"  >
@@ -50,6 +50,6 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
-    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons ></mat-paginator>
   </div>
 </div>

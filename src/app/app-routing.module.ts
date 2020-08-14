@@ -10,7 +10,7 @@ const routes: Routes = [
 component:SurveyComponent},
 {path:'CreateSurvey',
 component:CreateSurveyComponent,
-canActivate:[AuthenticationGuard],
+// canActivate:[AuthenticationGuard],
 },{path:'Questions',component:QuestionsComponent}
 ];
 
