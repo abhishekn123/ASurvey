@@ -32,6 +32,6 @@
         <button mat-raised-button type="button" (click)="addOption()" class="mat-sm-button add-option-btn" color="accent"  > Add option</button>
     </div>
     <div *ngIf="Question.get('QuestionType').value ==='TextBox' ||Question.get('QuestionName').valid " style="width: 100%;" class="text-center">
-        <button mat-raised-button type="button" (click)="addOption()" class="mat-sm-button add-option-btn mt-2" color="primary" [disabled]="!Question.get('QuestionName').valid || !Question.get('OptionMaster').valid " >Create</button>
+        <button mat-raised-button type="button" (click)="CreateQuestion()" class="mat-sm-button add-option-btn mt-2" color="primary" [disabled]="!Question.get('QuestionName').valid " >Create</button>
     </div>
 </form>

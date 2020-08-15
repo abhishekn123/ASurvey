@@ -1,3 +1,4 @@
+import { OptionMaster } from './../Models/OptionCreateModel';
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AlertManagerService } from 'src/app/Helpers/alert-manager.service';
@@ -10,24 +11,25 @@ import { SurveyService } from '../Service/survey.service';
 })
 export class DeleteOptionComponent implements OnInit {
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data,private SurveyService:SurveyService,private Alert:AlertManagerService,private dialogRef: MatDialogRef<DeleteOptionComponent>) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data:OptionMaster[],private SurveyService:SurveyService,private Alert:AlertManagerService,private dialogRef: MatDialogRef<DeleteOptionComponent>) { }
 
   ngOnInit(): void {
   }
   DeleteOption()
   {
-    
-    this.SurveyService.RemoveOption({"OM_Id":this.data.OptionId,"QM_Id":this.data.QuestionId,"QuestionMaster":null,"Options":""}).subscribe(data=>
+    console.log(this.data);
+    this.dialogRef.close(true); 
+    this.SurveyService.RemoveOption(this.data).subscribe(data=>
       {
-        console.log(data);
+        this.Alert.openSnackBar('Deleted Successfully','ok');
       },err=>
       {
-        console.log(err);
+        this.Alert.openSnackBar('Something Went Wrong','ok');
       })
   }
   closeDialog()
   {
-  
+    this.dialogRef.close(false);
   }
 
 }

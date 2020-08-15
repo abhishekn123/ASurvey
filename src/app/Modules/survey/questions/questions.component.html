@@ -20,7 +20,15 @@
       [required]="true">
       <mat-error>Question Name Required</mat-error>
   </mat-form-field>
-  <button  (click)="AddOption(Question.get('SurveId').value,Question.get('QuestionId').value)" mat-raised-button color="primary" style="text-align: left;" class="text-left mr-aut0">Add Option</button>
+  <mat-form-field  style="width: 100%;" appearance="outline">
+    <mat-select formControlName="OptionType" placeholder="Question type" 
+      (selectionChange)="onSeletQuestionType(QuestionIndex)" [required]="true">
+      <mat-option *ngFor="let type of questions" [value]="type.value">
+        {{type.viewValue}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <button  (click)="AddOption(Question.get('SurveId').value,Question.get('QuestionId').value,QuestionIndex)" mat-raised-button color="primary" style="text-align: left;" class="text-left mr-aut0">Add Option</button>
   <div formArrayName="OptionMaster">
    <div *ngFor="let optionArray of Question.controls['OptionMaster'].controls;let i=index">
     <form [formGroupName]="i" class="text-right ml-auto" >
@@ -31,9 +39,10 @@
         <mat-error>Option Name Required</mat-error>
     </mat-form-field>
     <button  (click)="RemoveOption(Question.get('SurveId').value,Question.get('QuestionId').value,optionArray.controls['oM_Id'].value)" mat-raised-button color="accent">Remove</button><br>
-    <button class="mt-2" *ngIf="i=== Question.get('OptionMaster')['controls'].length-1" (click)="UpdateQuestion(QuestionIndex,i)" mat-raised-button color="primary" [disabled]=" Question.get('QuestionName').invalid" >UpdateQuestion</button><br>
+    <button class="mt-2" *ngIf="i=== Question.get('OptionMaster')['controls'].length-1" (click)="UpdateQuestion(QuestionIndex)" mat-raised-button color="primary" [disabled]=" Question.get('QuestionName').invalid" >UpdateQuestion</button><br>
    </form>
   </div>
+  <button class="mt-2" *ngIf="Question.get('OptionType').value==='TextBox'" (click)="UpdateQuestion(QuestionIndex)" mat-raised-button color="primary" [disabled]=" Question.get('QuestionName').invalid" >UpdateQuestion</button><br>
   </div>
 </form>
 </mat-card>

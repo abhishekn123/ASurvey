@@ -20,6 +20,7 @@ export class CreateOptionComponent implements OnInit {
   }
   CreateOption()
   {
+    this.dialogRef.close(true);
     console.log(this.data)
     this.data.OptionMaster.options=this.Option.get('OptionValue').value;
     this.SurveyService.CreateOption(this.data).subscribe(data=>

@@ -13,12 +13,13 @@ import { SurveyDateValidatorDirective } from './SurveyValidators/survey-date-val
 import { DeleteOptionComponent } from './delete-option/delete-option.component';
 import { CreateOptionComponent } from './create-option/create-option.component';
 import { CreateQuestionComponent } from './create-question/create-question.component';
+import { DeleteQuestionComponent } from './delete-question/delete-question.component';
 @NgModule({
   imports: [
     CommonModule,MaterialModule,HttpClientModule,ReactiveFormsModule,FormsModule
   ],
-  declarations: [DepartmentIdConverterPipe,SurveyComponent, QuestionsComponent, CreateSurveyComponent, EditSurveyComponent, DeleteSurveyComponent, SurveyDateValidatorDirective,SurveyDateValidatorDirective, DeleteOptionComponent, CreateOptionComponent, CreateQuestionComponent ],
+  declarations: [DepartmentIdConverterPipe,SurveyComponent, QuestionsComponent, CreateSurveyComponent, EditSurveyComponent, DeleteSurveyComponent, SurveyDateValidatorDirective,SurveyDateValidatorDirective, DeleteOptionComponent, CreateOptionComponent, CreateQuestionComponent, DeleteQuestionComponent ],
   exports:[SurveyComponent,QuestionsComponent,CreateSurveyComponent ],
-  entryComponents:[EditSurveyComponent,DeleteSurveyComponent,CreateSurveyComponent,DeleteOptionComponent,CreateOptionComponent,CreateQuestionComponent]
+  entryComponents:[EditSurveyComponent,DeleteSurveyComponent,CreateSurveyComponent,DeleteOptionComponent,CreateOptionComponent,CreateQuestionComponent,DeleteQuestionComponent]
 })
 export class SurveyModule { }

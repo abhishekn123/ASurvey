@@ -1,10 +1,12 @@
-import { CreateOptionModel } from './../Models/OptionCreateModel';
+import { QuestionMaster } from './../create-survey/data-model';
+import { CreateOptionModel, OptionMaster } from './../Models/OptionCreateModel';
 import { OptionServerData } from './../questions/questions.component';
 import { SurveyData } from './../survey/survey.component';
 
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Departments } from '../edit-survey/edit-survey.component';
+import { QuestionViewModel } from '../Models/QuestionModel';
 @Injectable({
   providedIn: 'root'
 })
@@ -55,9 +57,24 @@ export class SurveyService {
     return this.http.post("https://localhost:5001/Admin/CreateOption",data,{headers:{'Content-Type': 'application/json'}})
   }
 
-  RemoveOption(data)
+  RemoveOption(OptionMaster:OptionMaster[])
   {
-    console.log(data)
-    return this.http.post("https://localhost:5001/Admin/RemoveOption",JSON.stringify(data),{headers:{'Content-Type': 'application/json'}})
+    console.log(OptionMaster)
+    return this.http.post("https://localhost:5001/Admin/RemoveOption",OptionMaster)
+  }
+
+  CreateQuestion(QuestionViewModel:QuestionViewModel)
+  {
+    console.log(QuestionViewModel);
+    return this.http.post("https://localhost:5001/Admin/CreateQuestion",QuestionViewModel)
+  }
+
+  RemoveQuestion(QuestionViewModel:QuestionViewModel)
+  {
+    return this.http.post("https://localhost:5001/Admin/DeleteQuestion",QuestionViewModel)
+  }
+  UpdateQuestion(QuestionViewModel:QuestionViewModel)
+  {
+    return this.http.post("https://localhost:5001/Admin/UpdateQuestion",QuestionViewModel)
   }
 }

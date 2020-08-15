@@ -21,7 +21,8 @@ export class CreateSurveyComponent implements OnInit {
     { value: 'RadioButton', viewValue: 'RadioButton' },
     { value: 'CheckBox', viewValue: 'CheckBox' },
     { value: 'DropDown', viewValue: 'DropDown' },
-    { value: 'List', viewValue: 'List' }
+    { value: 'List', viewValue: 'List' },
+    { value: 'TextBox', viewValue: 'TextBox' }
   ];
 
   private initForm() {
@@ -58,13 +59,20 @@ export class CreateSurveyComponent implements OnInit {
   }
   onSeletQuestionType(questionType, index) {
     console.log('Selected option inside onSelectedType',this.selectedOption)
+    if(questionType==="TextBox")
+    {
+      console.log(this.surveyForm.controls.surveyQuestions['controls'][index].controls.questionGroup.controls=[])
+    }
       this.addOptionControls(questionType, index)
   }
   addOptionControls(questionType, index) {
 
     let options = new FormArray([]);
 
-
+     if(questionType==="TextBox")
+     {
+         return;
+     }
     (this.surveyForm.controls.surveyQuestions['controls'][index].controls.questionGroup).addControl('options', options);
 
     this.clearFormArray((<FormArray>this.surveyForm.controls.surveyQuestions['controls'][index].controls.questionGroup.controls.options));
