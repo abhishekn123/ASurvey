@@ -1,3 +1,4 @@
+import { SurveyMaster } from './../Models/SurveyModel';
 import { AlertManagerService } from 'src/app/Helpers/alert-manager.service';
 import { DepartmentIdConverterPipe } from './../../../Pipes/department-id-converter.pipe';
 import { Departments } from './../edit-survey/edit-survey.component';
@@ -29,7 +30,6 @@ export class SurveyComponent implements OnInit {
   DepartmentsList:Departments[];
    SurveyArray:SurveyData[];
      constructor(private SurveyService:SurveyService,public dialog: MatDialog,  private route: Router,private Alert:AlertManagerService) { 
-     
      }
   ngOnInit(): void {
     this.Loading=true;
@@ -59,9 +59,8 @@ export class SurveyComponent implements OnInit {
 
   GetQuestions(SurveyId)
   {
-    console.log(this.dataSource.data)
-    console.log('Survey Id is',SurveyId);
-    this.route.navigate(["/Questions"])
+    console.log(SurveyId);
+    this.route.navigate(["/Questions"],{queryParams:{Survey:SurveyId}})
   }
 
   EditSurvey(Survey)

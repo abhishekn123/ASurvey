@@ -12,7 +12,7 @@ export class AppComponent implements OnInit {
 
   }
   ngOnInit(): void {
-    this.route.navigate(['/Questions'])
+    this.route.navigate(['/Home'])
   }
   title = 'IvyInternalApplication-AdminPortal';
 }

@@ -1,3 +1,4 @@
+import { CreateQuestionComponent } from './Modules/survey/create-question/create-question.component';
 import { QuestionsComponent } from './Modules/survey/questions/questions.component';
 import { AuthenticationGuard } from './Guards/authentication.guard';
 import { CreateSurveyComponent } from './Modules/survey/create-survey/create-survey.component';
@@ -11,7 +12,9 @@ component:SurveyComponent},
 {path:'CreateSurvey',
 component:CreateSurveyComponent,
 // canActivate:[AuthenticationGuard],
-},{path:'Questions',component:QuestionsComponent}
+},{
+  path:'Questions',component:QuestionsComponent
+ },
 ];
 
 @NgModule({

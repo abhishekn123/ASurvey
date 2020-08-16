@@ -1,3 +1,4 @@
+import { SurveyMaster } from './../Models/SurveyModel';
 import { QuestionViewModel } from './../Models/QuestionModel';
 import { CreateQuestionComponent } from './../create-question/create-question.component';
 import { CreateOptionModel, OptionMaster } from './../Models/OptionCreateModel';
@@ -11,27 +12,30 @@ import {MatDialog} from '@angular/material/dialog';
 import { QuestionMaster } from '../Models/QuestionModel';
 import { DeleteQuestionComponent } from '../delete-question/delete-question.component';
 import { QuestionType } from '../create-survey/create-survey.component';
+import { ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
 @Component({
   selector: 'app-questions',
   templateUrl: './questions.component.html',
   styleUrls: ['./questions.component.css']
 })
 export class QuestionsComponent implements OnInit {
-  constructor(public dialog: MatDialog,private Alert:AlertManagerService,private _formBuilder: FormBuilder,private SurveyService:SurveyService) { }
+  constructor(private location:Location,private route:ActivatedRoute,public dialog: MatDialog,private Alert:AlertManagerService,private _formBuilder: FormBuilder,private SurveyService:SurveyService) { }
   QuestionsFromServerArray=[];
   QuestionGroup:FormGroup[]=[]
   QuestionsFromServer:QuestionServerViewModel[];
   IsUpdateDisabled:Boolean;
+  surveyMaster:SurveyMaster;
+  surveyId:number;
   questions: QuestionType[] = [
     { value: 'RadioButton', viewValue: 'RadioButton' },
     { value: 'CheckBox', viewValue: 'CheckBox' },
     { value: 'DropDown', viewValue: 'DropDown' },
     { value: 'List', viewValue: 'List' },
-    { value: 'TextBox', viewValue: 'TextBox' }
   ];
-  GetSurveyQuestions(SurveyId:number)
+  GetSurveyQuestions(survey:SurveyMaster)
   {
-    this.SurveyService.GetSurveyQuestions(SurveyId).subscribe(data=>
+    this.SurveyService.GetSurveyQuestions(survey).subscribe(data=>
       {
         console.log('data from The Server',data);
         this.QuestionsFromServer=<QuestionServerViewModel[]>data;
@@ -75,7 +79,15 @@ export class QuestionsComponent implements OnInit {
   }
     // -------------------------------------------------------------//
   ngOnInit(): void {
-    this.GetSurveyQuestions(1);
+    this.route
+    .queryParams
+    .subscribe(params => {
+    this.surveyId = params['Survey'] || 0;
+    this.surveyMaster=new SurveyMaster( parseInt(params['Survey']),'','','',null,1)
+    console.log('Param',this.surveyMaster);
+    this.GetSurveyQuestions(this.surveyMaster);
+    });
+      
   }
     // -------------------------------------------------------------//
    RemoveQuestion(QuestionIndex)
@@ -93,14 +105,14 @@ export class QuestionsComponent implements OnInit {
     {
        optionMaster.push(option.value);
     }
-    let questionViewModel:QuestionViewModel=new QuestionViewModel(questionMaster,optionMaster,1);
+    let questionViewModel:QuestionViewModel=new QuestionViewModel(questionMaster,optionMaster,this.surveyMaster.SM_Id);
     const dialogRef=this.dialog.open(DeleteQuestionComponent,{data:questionViewModel});
     
     dialogRef.afterClosed().subscribe(result => {
       console.log('result is',result)
         if(result)
         {
-          this.GetSurveyQuestions(1);
+          this.GetSurveyQuestions(this.surveyMaster);
         }
     });
 
@@ -133,13 +145,13 @@ export class QuestionsComponent implements OnInit {
       console.log()
       if(this.QuestionsFromServerArray[questionIndex].controls['OptionMaster'].controls.length===optionMaster.length)
       {
-        let questionViewModel:QuestionViewModel=new QuestionViewModel(questionMaster,optionMaster,1);
+        let questionViewModel:QuestionViewModel=new QuestionViewModel(questionMaster,optionMaster,this.surveyMaster.SM_Id);
         this.SurveyService.UpdateQuestion(questionViewModel).subscribe(data=>
           {
-            console.log(data);
+           this.Alert.openSnackBar("Updated Successfully","Ok")
           },err=>
           {
-            console.log(err);
+            this.Alert.openSnackBar("Something Went Wrong","Ok")
           })
       }
    }
@@ -195,7 +207,7 @@ export class QuestionsComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if(result)
       {
-        this.GetSurveyQuestions(1);
+        this.GetSurveyQuestions(this.surveyMaster);
       }
     })
    }
@@ -210,18 +222,18 @@ export class QuestionsComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if(result)
       {
-        this.GetSurveyQuestions(1);
+        this.GetSurveyQuestions(this.surveyMaster);
       }
     });
    }
      // -------------------------------------------------------------//
   AddQuestion()
   {
-    const dialogRef=this.dialog.open(CreateQuestionComponent);
+    const dialogRef=this.dialog.open(CreateQuestionComponent,{data:this.surveyMaster.SM_Id});
     dialogRef.afterClosed().subscribe(result => {
       if(result)
       {
-        this.GetSurveyQuestions(1);
+        this.GetSurveyQuestions(this.surveyMaster);
       }
     });
   }
@@ -240,12 +252,14 @@ export class QuestionsComponent implements OnInit {
       dialogRef.afterClosed().subscribe(result => {
         if(result)
         {
-          this.GetSurveyQuestions(1);
+          this.UpdateQuestion(questionIndex);
+        }
+        else{
+          console.log(this.QuestionsFromServerArray[questionIndex].get('OptionType').value)
+          this.QuestionsFromServerArray[questionIndex].get('OptionType').value="RadioButton"
+          this.UpdateQuestion(questionIndex);
         }
       });
-    }
-    else
-    {
     }
       // this.addOptionControls(questionType, index)
   }

@@ -61,8 +61,12 @@ export class CreateSurveyComponent implements OnInit {
     console.log('Selected option inside onSelectedType',this.selectedOption)
     if(questionType==="TextBox")
     {
-      console.log(this.surveyForm.controls.surveyQuestions['controls'][index].controls.questionGroup.controls=[])
+      // console.log(this.surveyForm.controls.surveyQuestions['controls'][index].controls.questionGroup.controls=[]);
+      (<FormArray>this.surveyForm.controls.surveyQuestions['controls'][index].controls.questionGroup.controls.options).clear()
+      return;
     }
+    else
+    console.log('Valiating',this.surveyForm.controls.surveyQuestions.valid)
       this.addOptionControls(questionType, index)
   }
   addOptionControls(questionType, index) {

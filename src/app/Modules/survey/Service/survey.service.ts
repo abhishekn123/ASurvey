@@ -1,3 +1,4 @@
+import { SurveyMaster } from './../Models/SurveyModel';
 import { QuestionMaster } from './../create-survey/data-model';
 import { CreateOptionModel, OptionMaster } from './../Models/OptionCreateModel';
 import { OptionServerData } from './../questions/questions.component';
@@ -46,8 +47,10 @@ export class SurveyService {
      return this.http.post("https://localhost:5001/Admin/BulkInsertSurvey",JSON.parse(SurveyData),{headers:{'Content-Type': 'application/json'}})
   }
    
-  GetSurveyQuestions(SM_Id:number)
+  GetSurveyQuestions(surveyMaster:SurveyMaster)
   {
+    console.log('Serice ',typeof surveyMaster.SM_Id);
+    let SM_Id=surveyMaster.SM_Id;
     return this.http.post("https://localhost:5001/Admin/Questions",{SM_Id},{headers:{'Content-Type': 'application/json'}})
   }
 

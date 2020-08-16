@@ -1,3 +1,4 @@
+import { ActivatedRoute } from '@angular/router';
 import { QuestionViewModel } from './../Models/QuestionModel';
 import { OptionMaster } from '../Models/OptionCreateModel';
 import { FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
@@ -7,6 +8,7 @@ import { AlertManagerService } from 'src/app/Helpers/alert-manager.service';
 import { SurveyService } from '../Service/survey.service';
 import { QuestionType } from '../create-survey/create-survey.component';
 import { QuestionMaster } from '../../survey/Models/QuestionModel';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-create-question',
@@ -43,7 +45,8 @@ export class CreateQuestionComponent implements OnInit {
 
   CreateQuestion():void
   {
-    let questionMaster:QuestionMaster=new QuestionMaster(0,this.Question.controls['QuestionName'].value,this.Question.controls['QuestionType'].value,1);
+    console.log(this.data);
+    let questionMaster:QuestionMaster=new QuestionMaster(0,this.Question.controls['QuestionName'].value,this.Question.controls['QuestionType'].value,this.data);
     let optionMaster:OptionMaster[]=[];
     let questionViewModel:QuestionViewModel;
     console.log(  this.Question.get('OptionMaster').value.length)
@@ -54,11 +57,14 @@ export class CreateQuestionComponent implements OnInit {
     }
     else
     this.dialogRef.close(true);
-    for(let option of this.Question.get('OptionMaster')['controls'])
+    if(this.Question.controls['QuestionType'].value!=='TextBox')
     {
-        optionMaster.push(new OptionMaster(0,option.value))
-    }
-     questionViewModel= new QuestionViewModel(questionMaster,optionMaster,1);
+      for(let option of this.Question.get('OptionMaster')['controls'])
+      {
+          optionMaster.push(new OptionMaster(0,option.value))
+      }
+    }   
+     questionViewModel= new QuestionViewModel(questionMaster,optionMaster,this.data);
     this.SurveyService.CreateQuestion(questionViewModel).subscribe(data=>
       {
         this.Alert.openSnackBar('QuestionCreated Succesfully','ok')

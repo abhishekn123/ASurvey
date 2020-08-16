@@ -20,6 +20,7 @@
       [required]="true">
       <mat-error>Question Name Required</mat-error>
   </mat-form-field>
+  <div *ngIf="Question.get('OptionType').value!='TextBox'">
   <mat-form-field  style="width: 100%;" appearance="outline">
     <mat-select formControlName="OptionType" placeholder="Question type" 
       (selectionChange)="onSeletQuestionType(QuestionIndex)" [required]="true">
@@ -28,6 +29,7 @@
       </mat-option>
     </mat-select>
   </mat-form-field>
+</div>
   <button  (click)="AddOption(Question.get('SurveId').value,Question.get('QuestionId').value,QuestionIndex)" mat-raised-button color="primary" style="text-align: left;" class="text-left mr-aut0">Add Option</button>
   <div formArrayName="OptionMaster">
    <div *ngFor="let optionArray of Question.controls['OptionMaster'].controls;let i=index">
