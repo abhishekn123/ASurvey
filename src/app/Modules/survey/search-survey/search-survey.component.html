@@ -1,0 +1,51 @@
+<div>
+    <form  [formGroup]="SurveyFormGroup" >
+      <div  style="width:100%" >
+        <mat-form-field appearance="outline"  style="width:100%" >
+            <mat-label>Survey Name</mat-label>
+            <input matInput placeholder="Placeholder" formControlName="Surveyname" [value]="this.SurveyFormGroup.get('Surveyname').value" style="width:100%"  >
+        </mat-form-field>
+      </div>
+        <!-- <div>
+          <mat-form-field  appearance="outline">
+              <mat-label>Start Date</mat-label>
+              <input matInput [matDatepicker]="picker2"  [min]="SurveyData.endDate" formControlName="StartDate"  disabled [min]="todayDate" >
+              <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+              <mat-datepicker #picker2 color="primary"  disabled="false"></mat-datepicker>
+            </mat-form-field>
+       </div>
+       <div class="pd-0">
+          <mat-form-field appearance="outline" >
+              <mat-label>End Date</mat-label>
+              <input matInput [class.is-invalid]="this.SurveyFormGroup.errors?.MisMatch" [matDatepicker]="picker3"  formControlName="EndDate" [min]="SurveyData.startDate"  [min]="todayDate" disabled >
+              <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+              <mat-datepicker #picker3 color="primary" disabled="false"></mat-datepicker>
+            </mat-form-field>
+            <mat-error *ngIf="this.SurveyFormGroup.errors?.MisMatch" style="font-size: 12px;text-align: center;">Please Enter Proper date</mat-error>
+      </div> -->
+      <div class="form-group">
+        <label for="exampleInputEmail1">StartDate</label>
+        <input type="datetime-local"   formControlName="StartDate" class="form-control" id="exampleInputEmail1" aria-describedby="Start Date" placeholder="Enter email">
+      </div>
+      <div class="form-group mt-2 mb-4">
+        <label for="exampleInputEmail1">EndDate</label>
+        <input  type="datetime-local"    formControlName="EndDate" [min]="todayDate"  class="form-control" id="exampleInputEmail1" aria-describedby="Start Date" placeholder="Enter email">
+      </div>
+      <div style="width:100%" >
+          <mat-form-field appearance="outline" style="width:100%" >
+              <mat-label>Departments</mat-label>
+              <mat-select formControlName="Department" name="Department">
+                <mat-option *ngFor="let dept of Departments" [value]="dept.dM_Id">
+                  {{dept.dM_Name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+      </div>
+  
+      <div class="text-center">
+          <button mat-raised-button (click)="SearchSurvey()" color="primary" type="submit" >SEARCH SURVEY</button>
+      </div>
+    </form>
+    </div>
+  
+  

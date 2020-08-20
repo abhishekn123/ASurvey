@@ -68,7 +68,7 @@ export interface Departments{
 export const SurveyFromDateAndEndDateValidator: ValidatorFn = (control: FormGroup): ValidationErrors | null => {
   const StartDate = control.get('StartDate');
   const EndDate = control.get('EndDate');
-    if (new Date(StartDate.value) > new Date(EndDate.value)) {
+    if (new Date(StartDate.value) > new Date(EndDate.value) || new Date(StartDate.value)<new Date(Date.now()) || new Date(EndDate.value)<new Date(Date.now())  ) {
       
       return { MisMatch: true };
     } else {

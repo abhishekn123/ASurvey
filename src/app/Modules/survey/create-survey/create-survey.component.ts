@@ -1,12 +1,13 @@
 import { AlertManagerService } from './../../../Helpers/alert-manager.service';
-import { Departments } from './../edit-survey/edit-survey.component';
+import { Departments, SurveyFromDateAndEndDateValidator } from './../edit-survey/edit-survey.component';
 import { SurveyService } from './../Service/survey.service';
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import {FormBuilder, FormGroup, Validators,FormControl, FormArray,  } from '@angular/forms';
+import {FormBuilder, FormGroup, Validators,FormControl, FormArray, ValidatorFn, ValidationErrors,  } from '@angular/forms';
 import {STEPPER_GLOBAL_OPTIONS} from '@angular/cdk/stepper';
 import { SurveyData } from '../survey/survey.component';
 import {  QuestionMaster, OptionMaster, QuestionViewModel, ListQuestionViewModel } from './data-model';
+
 
 @Component({
   selector: 'app-create-survey',
@@ -97,7 +98,11 @@ export class CreateSurveyComponent implements OnInit {
     const optionGroup = new FormGroup({
       'optionText': new FormControl('', Validators.required),
     });
-    (<FormArray>this.surveyForm.controls.surveyQuestions['controls'][index].controls.questionGroup.controls.options).push(optionGroup);
+    console.log(this.surveyForm.controls.surveyQuestions['controls'][index].controls.questionType.value)
+    if(this.surveyForm.controls.surveyQuestions['controls'][index].controls.questionType.value!=='TextBox')
+    {
+      (<FormArray>this.surveyForm.controls.surveyQuestions['controls'][index].controls.questionGroup.controls.options).push(optionGroup);
+    }
   }
 
   removeOption(questionIndex, itemIndex) {
@@ -108,13 +113,15 @@ export class CreateSurveyComponent implements OnInit {
   postSurvey() {
    console.log(this.surveyForm.valid);
     let formData = this.surveyForm.value;
-    let optionMaster=[];
+    // let optionMaster=[];
     let QuestionViewModelList=[];
     let surveyQuestions = formData.surveyQuestions;
     let ListOfQuestionViewModel=new ListQuestionViewModel(QuestionViewModelList)
+    console.log('SurveyForm Value',this.surveyForm.value);
     surveyQuestions.forEach((question, index, array) => {
       let OptionType:string;
       let QM_QuestionName:string;
+      let optionMaster=[];
       let questionMaster=new QuestionMaster(OptionType,QM_QuestionName);
       let questionViewModel= new QuestionViewModel(questionMaster,optionMaster);
         questionViewModel.QuestionMaster.QM_QuestionName=question.questionTitle;
@@ -129,8 +136,8 @@ export class CreateSurveyComponent implements OnInit {
       }
         ListOfQuestionViewModel.QuestionViewModelList.push(questionViewModel);
     });
-    console.log(JSON.stringify({"SurveyMaster":{"SM_Name":this.firstFormGroup.get("SurveyName").value ,"FromDate":this.firstFormGroup.get("StartDate").value,"ToDate":this.firstFormGroup.get("EndDate").value,"DM_ID":1},"QuestionViewModelList":ListOfQuestionViewModel.QuestionViewModelList}));
-    this.BulkInsertSurvey(JSON.stringify({"SurveyMaster":{"SM_Name":this.firstFormGroup.get("SurveyName").value ,"StartDate":this.SurveyService.createDateAsUTC(this.firstFormGroup.get("StartDate").value),"EndDate":this.SurveyService.createDateAsUTC(this.firstFormGroup.get("EndDate").value),"DM_ID":1},"QuestionViewModelList":ListOfQuestionViewModel.QuestionViewModelList}))
+    console.log(JSON.stringify({"SurveyMaster":{"SM_Name":this.firstFormGroup.get("SurveyName").value ,"FromDate":this.firstFormGroup.get("StartDate").value,"ToDate":this.firstFormGroup.get("EndDate").value,"DM_ID":this.firstFormGroup.get('Department').value},"QuestionViewModelList":ListOfQuestionViewModel.QuestionViewModelList}));
+    this.BulkInsertSurvey(JSON.stringify({"SurveyMaster":{"SM_Name":this.firstFormGroup.get("SurveyName").value ,"StartDate":this.firstFormGroup.get("StartDate").value,"EndDate":this.firstFormGroup.get("EndDate").value,"DM_ID":this.firstFormGroup.get('Department').value},"QuestionViewModelList":ListOfQuestionViewModel.QuestionViewModelList}))
   }
   //---------------------------------------------------------------//
   onSubmit() {
@@ -140,7 +147,8 @@ export class CreateSurveyComponent implements OnInit {
   firstFormGroup: FormGroup;
   secondFormGroup: FormGroup;
   OptionFormGroup:FormGroup;
-  todayDate:Date = new Date();
+  todayDate:Date ;
+   tomorrow:Date ;
   presentDate:Date=new Date();
   nextDate:Date=this.todayDate;
   constructor(private _formBuilder: FormBuilder,private SurveyService:SurveyService,private Alertmanager:AlertManagerService ) {
@@ -154,6 +162,10 @@ export class CreateSurveyComponent implements OnInit {
    t=false;
    
   ngOnInit(): void {
+    this.todayDate=new Date();
+    this.tomorrow= new Date();
+    this.todayDate.setMinutes(this.todayDate.getMinutes()+5);
+    this.tomorrow.setHours(new Date().getHours()+3);
     this.Loader=false;
     this.initForm();
       this.SurveyService.GetAllDepartments().subscribe(data=>
@@ -166,7 +178,7 @@ export class CreateSurveyComponent implements OnInit {
       StartDate: [{disabled:true,}, Validators.required],
       EndDate: [{disabled:true}, Validators.required],
       Department:['', Validators.required],
-    });
+    },{ validator:SurveyFromDateAndEndDateValidator });
   }
   Change()
   {
@@ -181,10 +193,10 @@ export class CreateSurveyComponent implements OnInit {
     this.Loader=true;
     console.log('Bulk Insert Called')
     this.SurveyService.SurveyBulkInsert(SurveyData).subscribe(data=>
-      { this.Loader=true;
+      { this.Loader=false;
         this.Alertmanager.openSnackBar("Survey Created SucessFully","OK")
       },err=>
-      { this.Loader=true;
+      { this.Loader=false;
         this.Alertmanager.openSnackBar("Something Went Wrong","OK")
       })
   }
@@ -195,4 +207,15 @@ export interface QuestionType {
 }
 export interface OptionMasterType {
    Options: string
+}
+export const CustomDateValidator: ValidatorFn = (control: FormGroup): ValidationErrors | null => {
+  // const StartDate = control.get('StartDate');
+  // const EndDate = control.get('EndDate');
+  //   if (new Date(StartDate.value) > new Date(EndDate.value)) {
+      
+  //     return { MisMatch: true };
+  //   } else {
+  //     return null
+  //   }
+  return null;
 }

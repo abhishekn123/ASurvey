@@ -6,7 +6,7 @@
           <input matInput placeholder="Placeholder" formControlName="name" [value]="this.SurveyFormGroup.get('name').value" style="width:100%"  >
       </mat-form-field>
     </div>
-      <div>
+      <!-- <div>
         <mat-form-field  appearance="outline">
             <mat-label>Start Date</mat-label>
             <input matInput [matDatepicker]="picker2"  [min]="SurveyData.endDate" formControlName="StartDate"  disabled [min]="todayDate" >
@@ -22,7 +22,23 @@
             <mat-datepicker #picker3 color="primary" disabled="false"></mat-datepicker>
           </mat-form-field>
           <mat-error *ngIf="this.SurveyFormGroup.errors?.MisMatch" style="font-size: 12px;text-align: center;">Please Enter Proper date</mat-error>
+    </div> -->
+    <div class="form-group text-left">
+      <label for="StartDate" >StartDate</label><br>
+      <input type="datetime-local" [ngModel]="this.data.startDate | date:'yyyy-MM-ddTHH:mm'"  formControlName="StartDate" id="StartDate">
     </div>
+    <div class="form-group mt-2 text-left">
+      <label for="EndDate">EndDate</label><br>
+      <input type="datetime-local"   [ngModel]="this.data.endDate | date:'yyyy-MM-ddTHH:mm'"   formControlName="EndDate" [min]="todayDate"  id="EndDate" aria-describedby="End Date" >
+      <mat-error style="font-size: 12px;text-align: center;" *ngIf="this.SurveyFormGroup.errors?.MisMatch">Please Enter Proper date</mat-error>
+    </div>
+    <!-- <div>
+      <input type="datetime-local" [ngModel]="this.data.startDate | date:'yyyy-MM-ddTHH:mm'"  formControlName="StartDate"   />
+    </div>
+    <div class="mt-2">
+      <input type="datetime-local"  [ngModel]="this.data.endDate | date:'yyyy-MM-ddTHH:mm'"   formControlName="EndDate" [min]="todayDate" />
+      <mat-error style="font-size: 12px;text-align: center;" *ngIf="this.SurveyFormGroup.errors?.MisMatch">Please Enter Proper date</mat-error>
+    </div> -->
     <div style="width:100%" >
         <mat-form-field appearance="outline" style="width:100%" >
             <mat-label>Departments</mat-label>

@@ -26,7 +26,8 @@ export class SurveyService {
     return this.http.get("https://localhost:5001/Admin/GetSurveyList");
   }
   createDateAsUTC(date) {
-    return new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), new Date().getHours(), new Date().getMinutes(), new Date().getSeconds(),new Date().getMilliseconds()));
+    console.log("CreateUtcDate",date);
+    return new Date(Date.UTC(new Date().getFullYear(), date.getMonth(), date.getDate(), new Date().getHours(), new Date().getMinutes(), new Date().getSeconds(),new Date().getMilliseconds()));
 }
   UpdateSurvey(SurveyMaster)
   {

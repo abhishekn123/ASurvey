@@ -9,20 +9,36 @@
         <input matInput  formControlName="SurveyName" required>
         <mat-error>SurveyName is Required</mat-error>
       </mat-form-field>
-      <mat-form-field appearance='outline' style="width:100%">
+      <!-- <mat-form-field appearance='outline' style="width:100%">
         <mat-label>Start Date</mat-label>
-        <input matInput [matDatepicker]="picker3"  formControlName="StartDate" [min]="todayDate" [(ngModel)]="todayDate" disabled  >
+        <input [matDatepicker]="picker3"  formControlName="StartDate" [min]="todayDate" [(ngModel)]="todayDate" disabled  >
         <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
         <mat-datepicker #picker3 color="primary" disabled="false"></mat-datepicker>
         <mat-error>Start Date is Required</mat-error>
-      </mat-form-field>
-      <mat-form-field appearance='outline' style="width:100%">
+      </mat-form-field> -->
+      <!-- <div>
+        <input type="datetime-local"  formControlName="StartDate" [ngModel]="todayDate | date:'yyyy-MM-ddTHH:mm'"  [min]="todayDate"  />
+      </div> -->
+      <div class="form-group text-left">
+        <label for="StartDate" >StartDate</label>
+        <input type="datetime-local"  formControlName="StartDate" [ngModel]="todayDate | date:'yyyy-MM-ddTHH:mm'"  [min]="todayDate" class="form-control" id="StartDate" aria-describedby="Start Date" placeholder="Enter email">
+      </div>
+      <div class="form-group mt-2 text-left">
+        <label for="EndDate">EndDate</label>
+        <input type="datetime-local"  formControlName="EndDate" [ngModel]="tomorrow | date:'yyyy-MM-ddTHH:mm'" [min]="todayDate"  class="form-control" id="EndDate" aria-describedby="Start Date" placeholder="Enter email">
+        <mat-error *ngIf="this.firstFormGroup.errors?.MisMatch" style="font-size: 12px;text-align: center;">Please Enter Proper date</mat-error>
+      </div>
+      <!-- <div class="mt-2">
+        <input type="datetime-local"  formControlName="EndDate" [ngModel]="tomorrow | date:'yyyy-MM-ddTHH:mm'" [min]="todayDate"   />
+        <mat-error *ngIf="this.firstFormGroup.errors?.MisMatch" style="font-size: 12px;text-align: center;">Please Enter Proper date</mat-error>
+      </div> -->
+      <!-- <mat-form-field appearance='outline' style="width:100%">
         <mat-label>End Date</mat-label>
         <input matInput [matDatepicker]="picker4" formControlName="EndDate" [min]="todayDate" [value]='todayDate' disabled  [(ngModel)]="nextDate">
         <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
         <mat-datepicker #picker4 color="primary" disabled="false"></mat-datepicker>
         <mat-error>End Date is Required</mat-error>
-      </mat-form-field>
+      </mat-form-field> -->
       <div style="width:100%" >
         <mat-form-field appearance="outline" style="width:100%" >
             <mat-label>Departments</mat-label>
@@ -88,7 +104,7 @@
                         </div>
                       </li>                      
                     </ul>
-                    <button mat-raised-button type="button" (click)="addOption(i)" class="mat-sm-button add-option-btn" color="accent"> Add option</button>
+                    <button mat-raised-button type="button" (click)="addOption(i)" class="mat-sm-button add-option-btn" color="accent" *ngIf="this.surveyForm.controls.surveyQuestions['controls'][i].controls.questionType.value!=='TextBox'"> Add option</button>
                   </div>
                   </div>
                 </div>
@@ -121,7 +137,7 @@
     <ng-template matStepLabel>Done</ng-template>
     <mat-card class="text-center">  
       <button class="full-width mx-auto" *ngIf="!Loader" style="width:50%;" color="primary" type="submit" [disabled]="!this.surveyForm.valid || !this.firstFormGroup.valid" mat-raised-button (click)="onSubmit()" >
-        Add Survey
+         Save Survey
         </button>
         <mat-spinner class="full-width mx-auto" *ngIf="Loader" [diameter]="20"></mat-spinner>
       <div>

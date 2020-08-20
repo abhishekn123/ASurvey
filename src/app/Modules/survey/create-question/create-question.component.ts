@@ -68,8 +68,10 @@ export class CreateQuestionComponent implements OnInit {
     this.SurveyService.CreateQuestion(questionViewModel).subscribe(data=>
       {
         this.Alert.openSnackBar('QuestionCreated Succesfully','ok')
+          this.dialogRef.close(true);
       },err=>
       {
+        this.dialogRef.close(true);
         this.Alert.openSnackBar('Something Went Wrong','ok')
       })
   }

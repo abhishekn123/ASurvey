@@ -30,14 +30,14 @@
     </mat-select>
   </mat-form-field>
 </div>
-  <button  (click)="AddOption(Question.get('SurveId').value,Question.get('QuestionId').value,QuestionIndex)" mat-raised-button color="primary" style="text-align: left;" class="text-left mr-aut0">Add Option</button>
-  <div formArrayName="OptionMaster">
+  <button *ngIf="this.QuestionsFromServerArray[QuestionIndex].get('OptionType').value!=='TextBox'" (click)="AddOption(Question.get('SurveId').value,Question.get('QuestionId').value,QuestionIndex)" mat-raised-button color="primary" style="text-align: left;" class="text-left mr-aut0">Add Option</button>
+  <div formArrayName="OptionMaster" >
    <div *ngFor="let optionArray of Question.controls['OptionMaster'].controls;let i=index">
     <form [formGroupName]="i" class="text-right ml-auto" >
     <mat-form-field  style="width: 100%; margin-top: 5px;" appearance="outline">
       <mat-label>OptionName</mat-label>
       <input formControlName="options" maxlength="200" matInput placeholder="Option title" 
-        [required]="true">
+        [required]="true" >
         <mat-error>Option Name Required</mat-error>
     </mat-form-field>
     <button  (click)="RemoveOption(Question.get('SurveId').value,Question.get('QuestionId').value,optionArray.controls['oM_Id'].value)" mat-raised-button color="accent">Remove</button><br>

@@ -14,11 +14,13 @@ import { DeleteOptionComponent } from './delete-option/delete-option.component';
 import { CreateOptionComponent } from './create-option/create-option.component';
 import { CreateQuestionComponent } from './create-question/create-question.component';
 import { DeleteQuestionComponent } from './delete-question/delete-question.component';
+import { SearchSurveyComponent } from './search-survey/search-survey.component';
+import {TableModule} from 'primeng/table';
 @NgModule({
   imports: [
-    CommonModule,MaterialModule,HttpClientModule,ReactiveFormsModule,FormsModule
+CommonModule,MaterialModule,HttpClientModule,ReactiveFormsModule,FormsModule,TableModule
   ],
-  declarations: [DepartmentIdConverterPipe,SurveyComponent, QuestionsComponent, CreateSurveyComponent, EditSurveyComponent, DeleteSurveyComponent, SurveyDateValidatorDirective,SurveyDateValidatorDirective, DeleteOptionComponent, CreateOptionComponent, CreateQuestionComponent, DeleteQuestionComponent ],
+  declarations: [DepartmentIdConverterPipe,SurveyComponent, QuestionsComponent, CreateSurveyComponent, EditSurveyComponent, DeleteSurveyComponent, SurveyDateValidatorDirective,SurveyDateValidatorDirective, DeleteOptionComponent, CreateOptionComponent, CreateQuestionComponent, DeleteQuestionComponent, SearchSurveyComponent ],
   exports:[SurveyComponent,QuestionsComponent,CreateSurveyComponent ],
   entryComponents:[EditSurveyComponent,DeleteSurveyComponent,CreateSurveyComponent,DeleteOptionComponent,CreateOptionComponent,CreateQuestionComponent,DeleteQuestionComponent]
 })

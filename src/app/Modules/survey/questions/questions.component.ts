@@ -231,10 +231,9 @@ export class QuestionsComponent implements OnInit {
   {
     const dialogRef=this.dialog.open(CreateQuestionComponent,{data:this.surveyMaster.SM_Id});
     dialogRef.afterClosed().subscribe(result => {
-      if(result)
-      {
+
         this.GetSurveyQuestions(this.surveyMaster);
-      }
+      
     });
   }
   //----------------------------------------------------------------//

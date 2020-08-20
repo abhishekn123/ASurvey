@@ -15,6 +15,7 @@ import {
   GoogleLoginProvider,
 } from 'angularx-social-login';
 import { JwtModule } from "@auth0/angular-jwt";
+import { AgGridModule } from 'ag-grid-angular';
 
 
 @NgModule({
@@ -30,7 +31,8 @@ import { JwtModule } from "@auth0/angular-jwt";
     SocialLoginModule,
     AuthenticationModule,
     MaterialModule,
-    JwtModule
+    JwtModule,
+    AgGridModule.withComponents([])
   ],
   providers: [   {
     provide: 'SocialAuthServiceConfig',
@@ -40,7 +42,7 @@ import { JwtModule } from "@auth0/angular-jwt";
         {
           id: GoogleLoginProvider.PROVIDER_ID,
           provider: new GoogleLoginProvider(
-            '782740102672-mfc1do9oq50mpedecc92fmiu981ks69n.apps.googleusercontent.com'
+            '471172821639-k4ee78c4kqq22pj7n8580hp2o5jqa5gk.apps.googleusercontent.com'
           ),
         },],
     } as SocialAuthServiceConfig,
