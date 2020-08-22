@@ -5,10 +5,18 @@ import { CreateSurveyComponent } from './Modules/survey/create-survey/create-sur
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { SurveyComponent } from './Modules/survey/survey/survey.component';
+import { LoginComponent } from './Modules/authentication/login/login.component';
 
 const routes: Routes = [
-  {path:'Home',
-component:SurveyComponent},
+  {
+    path:'Login',
+    component:LoginComponent,
+  },
+  {
+    path:'Home',
+component:SurveyComponent,
+canActivate:[AuthenticationGuard],
+},
 {path:'CreateSurvey',
 component:CreateSurveyComponent,
 canActivate:[AuthenticationGuard],
@@ -16,7 +24,7 @@ canActivate:[AuthenticationGuard],
   path:'Questions',
   component:QuestionsComponent,
   canActivate:[AuthenticationGuard],
- },
+ }
 ];
 
 @NgModule({

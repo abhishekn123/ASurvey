@@ -25,13 +25,14 @@ import {MatDividerModule} from '@angular/material/divider';
 import {MatRippleModule} from '@angular/material/core';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatSidenavModule} from '@angular/material/sidenav';
+import {MatTreeModule} from '@angular/material/tree';
 @NgModule({
   declarations: [],
   imports: [
     CommonModule,MatSliderModule,MatCardModule,MatTableModule,MatFormFieldModule,MatPaginatorModule,MatSlideToggleModule,
-    MatButtonModule,MatMenuModule,MatIconModule,MatExpansionModule,MatDialogModule,MatInputModule,MatSnackBarModule,MatDatepickerModule,MatNativeDateModule,MatSelectModule,MatProgressSpinnerModule,MatStepperModule,MatGridListModule,MatBadgeModule,MatListModule,MatDividerModule,MatRippleModule,MatToolbarModule,MatSidenavModule
+    MatButtonModule,MatMenuModule,MatIconModule,MatExpansionModule,MatDialogModule,MatInputModule,MatSnackBarModule,MatDatepickerModule,MatNativeDateModule,MatSelectModule,MatProgressSpinnerModule,MatStepperModule,MatGridListModule,MatBadgeModule,MatListModule,MatDividerModule,MatRippleModule,MatToolbarModule,MatSidenavModule,MatTreeModule
   ],
   exports:[MatSliderModule,MatCardModule,MatTableModule,MatFormFieldModule,MatPaginatorModule,MatButtonModule,MatMenuModule
-  ,MatIconModule,MatExpansionModule,MatDialogModule,MatInputModule,MatSnackBarModule,MatDatepickerModule,MatNativeDateModule,MatSelectModule,MatProgressSpinnerModule,MatStepperModule,MatSlideToggleModule,MatGridListModule,MatBadgeModule,MatListModule,MatDividerModule,MatRippleModule,MatToolbarModule,MatSidenavModule]
+  ,MatIconModule,MatExpansionModule,MatDialogModule,MatInputModule,MatSnackBarModule,MatDatepickerModule,MatNativeDateModule,MatSelectModule,MatProgressSpinnerModule,MatStepperModule,MatSlideToggleModule,MatGridListModule,MatBadgeModule,MatListModule,MatDividerModule,MatRippleModule,MatToolbarModule,MatSidenavModule,MatTreeModule]
 })
 export class MaterialModule { }

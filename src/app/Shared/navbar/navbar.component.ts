@@ -1,3 +1,4 @@
+import { AuthenticationService } from './../../Modules/authentication/AuthService/authentication.service';
 import { Router } from '@angular/router';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { SocialAuthService } from "angularx-social-login";
@@ -13,7 +14,7 @@ export class NavbarComponent implements OnInit {
   user: SocialUser;
   loggedIn: boolean;
   side:string='side'
-  constructor(private authService: SocialAuthService,private router:Router) {
+  constructor(private authService: SocialAuthService,private router:Router,private Auth:AuthenticationService) {
     console.log('constructor called');
    
    }
@@ -23,8 +24,12 @@ export class NavbarComponent implements OnInit {
    }
   ngOnInit(): void {
     this.authService.authState.subscribe((user) => {
-      this.user = user;
-      this.loggedIn = (user != null);
+      if(this.Auth.getToken())
+      {
+        this.user = user;
+        this.loggedIn = (user != null);
+      }
+    
       console.log('Subscribe called');
     },err=>
     {
@@ -36,5 +41,8 @@ export class NavbarComponent implements OnInit {
     });
   
   }
-
+  Home()
+  {
+    this.router.navigate(['/Home'])
+  }
 }

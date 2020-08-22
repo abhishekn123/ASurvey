@@ -141,7 +141,7 @@ export class SurveyComponent implements OnInit {
         
         if(result.startDate!=="")
         {
-           if(new Date(exp.startDate).getDate()===new Date(result.startDate).getDate())
+           if(new Date(exp.startDate).getDate()>=new Date(result.startDate).getDate())
            {
             return exp;
            }
@@ -155,7 +155,7 @@ export class SurveyComponent implements OnInit {
         {
           if(result.endDate!=="")
           {
-             if(new Date(exp.endDate).getDate()===new Date(result.endDate).getDate())
+             if(new Date(exp.endDate).getDate()<=new Date(result.endDate).getDate())
              {
               return exp;
              }

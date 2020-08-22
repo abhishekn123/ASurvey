@@ -21,9 +21,10 @@ export class SurveyService {
    }
    SurveyData:SurveyData[];
    Departments:Departments[];
+   BaseUrl="https://localhost:5001"
   GetAllSurveys()
   {
-    return this.http.get("https://localhost:5001/Admin/GetSurveyList");
+    return this.http.get(this.BaseUrl+"/Admin/GetSurveyList");
   }
   createDateAsUTC(date) {
     console.log("CreateUtcDate",date);
@@ -31,54 +32,54 @@ export class SurveyService {
 }
   UpdateSurvey(SurveyMaster)
   {
-    return this.http.post("https://localhost:5001/Admin/UpdateSurvey",SurveyMaster)
+    return this.http.post(this.BaseUrl+"/Admin/UpdateSurvey",SurveyMaster)
   }
   DeleteSurvey(SurveyMaster)
   {
-    return this.http.post("https://localhost:5001/Admin/DeleteSurvey",SurveyMaster)
+    return this.http.post(this.BaseUrl+"/Admin/DeleteSurvey",SurveyMaster)
   }
   GetAllDepartments()
   {
-    return this.http.get("https://localhost:5001/Admin/GetAllDepartMents");
+    return this.http.get(this.BaseUrl+"/Admin/GetAllDepartMents");
   }
 
   SurveyBulkInsert(SurveyData)
   {
     let headers = new Headers({ 'Content-Type': 'application/json' });
-     return this.http.post("https://localhost:5001/Admin/BulkInsertSurvey",JSON.parse(SurveyData),{headers:{'Content-Type': 'application/json'}})
+     return this.http.post(this.BaseUrl+"/Admin/BulkInsertSurvey",JSON.parse(SurveyData),{headers:{'Content-Type': 'application/json'}})
   }
    
   GetSurveyQuestions(surveyMaster:SurveyMaster)
   {
     console.log('Serice ',typeof surveyMaster.SM_Id);
     let SM_Id=surveyMaster.SM_Id;
-    return this.http.post("https://localhost:5001/Admin/Questions",{SM_Id},{headers:{'Content-Type': 'application/json'}})
+    return this.http.post(this.BaseUrl+"/Admin/Questions",{SM_Id},{headers:{'Content-Type': 'application/json'}})
   }
 
   CreateOption(data:CreateOptionModel)
   {
     console.log(data)
-    return this.http.post("https://localhost:5001/Admin/CreateOption",data,{headers:{'Content-Type': 'application/json'}})
+    return this.http.post(this.BaseUrl+"/Admin/CreateOption",data,{headers:{'Content-Type': 'application/json'}})
   }
 
   RemoveOption(OptionMaster:OptionMaster[])
   {
     console.log(OptionMaster)
-    return this.http.post("https://localhost:5001/Admin/RemoveOption",OptionMaster)
+    return this.http.post(this.BaseUrl+"/Admin/RemoveOption",OptionMaster)
   }
 
   CreateQuestion(QuestionViewModel:QuestionViewModel)
   {
     console.log(QuestionViewModel);
-    return this.http.post("https://localhost:5001/Admin/CreateQuestion",QuestionViewModel)
+    return this.http.post(this.BaseUrl+"/Admin/CreateQuestion",QuestionViewModel)
   }
 
   RemoveQuestion(QuestionViewModel:QuestionViewModel)
   {
-    return this.http.post("https://localhost:5001/Admin/DeleteQuestion",QuestionViewModel)
+    return this.http.post(this.BaseUrl+"/Admin/DeleteQuestion",QuestionViewModel)
   }
   UpdateQuestion(QuestionViewModel:QuestionViewModel)
   {
-    return this.http.post("https://localhost:5001/Admin/UpdateQuestion",QuestionViewModel)
+    return this.http.post(this.BaseUrl+"/Admin/UpdateQuestion",QuestionViewModel)
   }
 }
