@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { AlertManagerService } from 'src/app/Helpers/alert-manager.service';
-import { SocialAuthService } from 'angularx-social-login';
+import { SocialAuthService, SocialUser } from 'angularx-social-login';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +12,7 @@ export class AuthenticationService {
   constructor(private http:HttpClient,private Auth:SocialAuthService,private Alert:AlertManagerService) { }
    
   BaseUrl="https://localhost:5001"
+  User:SocialUser;
 
   AuthenticateUser(Token_Id:string)
   {

@@ -26,11 +26,13 @@
     "ag-grid-community": "^23.2.1",
     "angular-jwt": "^0.1.11",
     "angularx-social-login": "^3.2.1",
+    "file-saver": "^2.0.2",
     "http-server": "^0.12.3",
     "primeicons": "^4.0.0",
     "primeng": "^10.0.0-rc.3",
     "rxjs": "~6.5.5",
     "tslib": "^2.0.0",
+    "xlsx": "^0.16.6",
     "zone.js": "~0.10.3"
   },
   "devDependencies": {

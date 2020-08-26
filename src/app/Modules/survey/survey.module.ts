@@ -16,11 +16,12 @@ import { CreateQuestionComponent } from './create-question/create-question.compo
 import { DeleteQuestionComponent } from './delete-question/delete-question.component';
 import { SearchSurveyComponent } from './search-survey/search-survey.component';
 import {TableModule} from 'primeng/table';
+import { PreviewSurveyComponent } from './preview-survey/preview-survey.component';
 @NgModule({
   imports: [
 CommonModule,MaterialModule,HttpClientModule,ReactiveFormsModule,FormsModule,TableModule
   ],
-  declarations: [DepartmentIdConverterPipe,SurveyComponent, QuestionsComponent, CreateSurveyComponent, EditSurveyComponent, DeleteSurveyComponent, SurveyDateValidatorDirective,SurveyDateValidatorDirective, DeleteOptionComponent, CreateOptionComponent, CreateQuestionComponent, DeleteQuestionComponent, SearchSurveyComponent ],
+  declarations: [DepartmentIdConverterPipe,SurveyComponent, QuestionsComponent, CreateSurveyComponent, EditSurveyComponent, DeleteSurveyComponent, SurveyDateValidatorDirective,SurveyDateValidatorDirective, DeleteOptionComponent, CreateOptionComponent, CreateQuestionComponent, DeleteQuestionComponent, SearchSurveyComponent, PreviewSurveyComponent ],
   exports:[SurveyComponent,QuestionsComponent,CreateSurveyComponent ],
   entryComponents:[EditSurveyComponent,DeleteSurveyComponent,CreateSurveyComponent,DeleteOptionComponent,CreateOptionComponent,CreateQuestionComponent,DeleteQuestionComponent]
 })

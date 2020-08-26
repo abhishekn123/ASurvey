@@ -6,7 +6,7 @@ import { DeleteSurveyComponent } from './../delete-survey/delete-survey.componen
 import { CreateSurveyComponent } from './../create-survey/create-survey.component';
 import { SurveyService } from './../Service/survey.service';
 import { Component, OnInit,ViewChild } from '@angular/core';
-import {MatSort} from '@angular/material/sort';
+import {MatSort, Sort} from '@angular/material/sort';
 import {MatPaginator} from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import {MatIconRegistry} from '@angular/material/icon';
@@ -16,6 +16,8 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FormControl } from '@angular/forms';
 import { SearchSurveyComponent } from '../search-survey/search-survey.component';
+import { saveAs } from 'file-saver';
+import * as XLSX from 'xlsx';
 @Component({
   selector: 'app-survey',
   templateUrl: './survey.component.html',
@@ -25,7 +27,7 @@ import { SearchSurveyComponent } from '../search-survey/search-survey.component'
 
 
 export class SurveyComponent implements OnInit {
-  dataSource ;
+  dataSource:MatTableDataSource<any> ;
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static:true}) sort: MatSort;
   Loading:Boolean;
@@ -35,17 +37,29 @@ export class SurveyComponent implements OnInit {
   StartDateFilter=new FormControl('');
   EndDateFilter=new FormControl('');
   DepartmentFilter=new FormControl('');
+  DataLength:number;
   filterValues={
     sM_Name:'',
     startDate:'',
     endDate:'',
     dM_Id:'' 
   }
+  DownloadSurvey()
+  {
+    
+    // console.log('Called')
+    // const blob = new Blob([], { type: 'text/plain' });
+    // saveAs(blob, "MyFile.xlsx");
+
+    const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.SurveyArray);
+        const workbook: XLSX.WorkBook = {Sheets: {'data': worksheet}, SheetNames: ['data']};
+        XLSX.writeFile(workbook,"Report.xlsx");
+  }
   SelectedDepartmentId:number;
   SurveyName;
    SurveyArray:SurveyData[];
      constructor(private SurveyService:SurveyService,public dialog: MatDialog,  private route: Router,private Alert:AlertManagerService) { 
-       
+   
      }
      createFilter(): (data: any, filter: string) => boolean {
       let filterFunction = function(data, filter): boolean {
@@ -66,6 +80,12 @@ export class SurveyComponent implements OnInit {
         this.Departments=data["departments"];
       })
   }
+  ClearSearch()
+  {
+    this.dataSource = new MatTableDataSource<any>(this.SurveyArray); 
+    this.dataSource.paginator=this.paginator;
+    this.DataLength=this.dataSource.data.length;
+  }
   // SearchByDepartmentChange()
   // {
   //   let newState = this.dataSource.filter(exp=>exp.dM_Id===this.SelectedDepartmentId);
@@ -79,6 +99,33 @@ export class SurveyComponent implements OnInit {
   //   this.dataSource.paginator=this.paginator;
 
   // }
+ sortedData:SurveyData[];
+  sortData(sort:Sort)
+  {
+     const data = this.dataSource.data.slice();
+     if (!sort.active || sort.direction === '') {
+      this.sortedData = data;
+      return;
+    }  
+    this.sortedData = data.sort((a, b) => {
+  
+      const isAsc = sort.direction === 'asc';
+      switch (sort.active) {
+        case 'sM_Name': return this.compare(a.sM_Name, b.sM_Name, isAsc);
+        case 'startDate': return this.compare(a.startDate, b.startDate, isAsc);
+        case 'endDate': return this.compare(a.endDate, b.endDate, isAsc);
+        case 'dM_Id': return this.compare(a.dM_Id, b.dM_Id, isAsc);
+        default: return 0;
+      }
+    })
+     this.dataSource=new MatTableDataSource<any>(this.sortedData);
+     this.dataSource.paginator=this.paginator; 
+    
+  }
+   compare(a: number | string, b: number | string, isAsc: boolean) {
+    return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
+  }
+  
    OpenCreateSurveyComponent()
    {
     this.route.navigate(['/CreateSurvey']);
@@ -89,6 +136,7 @@ export class SurveyComponent implements OnInit {
       {
         this.Loading=false;
       this.SurveyArray=data;
+      this.sortedData=this.SurveyArray.slice();
       this.dataSource = new MatTableDataSource<any>(this.SurveyArray); 
       this.dataSource.paginator=this.paginator;
       console.log('dataSource',this.dataSource)
@@ -109,12 +157,15 @@ export class SurveyComponent implements OnInit {
     }
     this.route.navigate(["/Questions"],{queryParams:{Survey:Survey.sM_Id}})
   }
-
+  ViewQuestion(Survey)
+  {
+    this.route.navigate(["/PreView"],{queryParams:{Survey:Survey.sM_Id}})
+  }
   EditSurvey(Survey)
   {
-    if(!(Date.now()<=Date.parse(Survey.startDate)))
+    if((Date.parse(Survey.endDate)<=Date.now()))
     {
-      return this.Alert.openSnackBar("Only Future Surveys is Editable","OK")
+      return this.Alert.openSnackBar("Survey Expired","OK")
     }
     const dialogRef=this.dialog.open(EditSurveyComponent,{data:Survey});
     dialogRef.afterClosed().subscribe(result => {
@@ -167,6 +218,7 @@ export class SurveyComponent implements OnInit {
           }
         }).filter(exp=>result.dM_Id!=0?exp.dM_Id===result.dM_Id:exp);
         this.dataSource= new MatTableDataSource<any>(survey);
+        this.DataLength=this.dataSource.data.length;
         this.dataSource.paginator= this.paginator;
       }
 

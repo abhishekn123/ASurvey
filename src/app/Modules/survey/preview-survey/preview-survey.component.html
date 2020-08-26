@@ -1,0 +1,19 @@
+<div class="container mt-3">
+<mat-card>
+
+<div *ngFor="let Question of QuestionsFromServer;let j=index" class="mt-2">
+    <mat-card>
+    <mat-card-title><span>{{j+1}} ) </span>{{Question.questionMaster.qM_QuestionName}}</mat-card-title>
+    <mat-card-subtitle ><span>Question Type:- </span>{{Question.questionMaster.optionType}}</mat-card-subtitle>
+    
+        <div *ngFor="let option of Question.optionMaster;let i=index">
+            <mat-card-content>
+            <span>{{i+1}} )  {{option.options}}</span>
+          </mat-card-content>
+        </div>
+  
+</mat-card>
+</div>
+</mat-card>
+</div>
+

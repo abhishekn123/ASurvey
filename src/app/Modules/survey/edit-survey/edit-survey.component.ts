@@ -2,11 +2,12 @@ import { SurveyData } from './../survey/survey.component';
 import { AlertManagerService } from './../../../Helpers/alert-manager.service';
 import { SurveyService } from './../Service/survey.service';
 import { Component, OnInit, Inject, Output, EventEmitter, Directive } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { FormControl, FormGroup, FormBuilder, Validators, ValidatorFn, ValidationErrors } from '@angular/forms';
 import { SurveyDateValidatorDirective } from '../SurveyValidators/survey-date-validator.directive';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-edit-survey',
@@ -16,11 +17,14 @@ import { SurveyDateValidatorDirective } from '../SurveyValidators/survey-date-va
 
 export class EditSurveyComponent implements OnInit {
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data:SurveyData,private SurveyService:SurveyService,private Alert:AlertManagerService,private _formBuilder: FormBuilder) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data:SurveyData,private SurveyService:SurveyService,private Alert:AlertManagerService,private _formBuilder: FormBuilder,private route:Router,private dialogRef: MatDialogRef<EditSurveyComponent>) { }
    @Output() GetAllSurvey=new EventEmitter();
    SurveyFormGroup: FormGroup;
+   isDisabled=true;
+   StartedDate:Date;
 
   ngOnInit(): void {
+    this.StartedDate=new Date(this.data.startDate)
    this.SurveyFormGroup=this._formBuilder.group({
      'name':new FormControl(this.data.sM_Name),
     'StartDate' : new FormControl((new Date(this.data.startDate)).toISOString()),
@@ -60,7 +64,17 @@ export class EditSurveyComponent implements OnInit {
         
       })
   }
+  GetQuestions()
+  {
+    if(!(new Date(this.SurveyData.startDate)>new Date()))
+    {
+      return this.Alert.openSnackBar("Only Future Surveys is Editable","OK")
+    }
+    this.dialogRef.close();
+    this.route.navigate(["/Questions"],{queryParams:{Survey:this.SurveyData.sM_Id}})
+  }
 }
+
 export interface Departments{
   dM_Id:number,
   dM_Name:string,

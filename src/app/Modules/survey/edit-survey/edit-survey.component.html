@@ -1,4 +1,4 @@
-<div>
+<div class="text-center">
   <form  [formGroup]="SurveyFormGroup" (ngSubmit)="UpdateSurvey()">
     <div  style="width:100%" >
       <mat-form-field appearance="outline"  style="width:100%" >
@@ -23,14 +23,18 @@
           </mat-form-field>
           <mat-error *ngIf="this.SurveyFormGroup.errors?.MisMatch" style="font-size: 12px;text-align: center;">Please Enter Proper date</mat-error>
     </div> -->
-    <div class="form-group text-left">
+    <div class="form-group text-left" *ngIf="StartedDate>todayDate">
       <label for="StartDate" >StartDate</label><br>
-      <input type="datetime-local" [ngModel]="this.data.startDate | date:'yyyy-MM-ddTHH:mm'"  formControlName="StartDate" id="StartDate">
+      <input type="datetime-local"  [ngModel]="this.data.startDate | date:'yyyy-MM-ddTHH:mm'"  formControlName="StartDate" id="StartDate" >
+    </div>
+    <div class="form-group text-left" *ngIf="StartedDate<todayDate">
+      <label for="StartDate" >StartDate</label><br>
+      <input type="datetime-local"  [ngModel]="this.data.startDate | date:'yyyy-MM-ddTHH:mm'"  formControlName="StartDate" id="StartDate" disabled >
     </div>
     <div class="form-group mt-2 text-left">
       <label for="EndDate">EndDate</label><br>
       <input type="datetime-local"   [ngModel]="this.data.endDate | date:'yyyy-MM-ddTHH:mm'"   formControlName="EndDate" [min]="todayDate"  id="EndDate" aria-describedby="End Date" >
-      <mat-error style="font-size: 12px;text-align: center;" *ngIf="this.SurveyFormGroup.errors?.MisMatch">Please Enter Proper date</mat-error>
+      <mat-error style="font-size: 12px;text-align: center;" class="text-left" *ngIf="this.SurveyFormGroup.errors?.MisMatch">StartDate Shouldnot Exceed EndDate</mat-error>
     </div>
     <!-- <div>
       <input type="datetime-local" [ngModel]="this.data.startDate | date:'yyyy-MM-ddTHH:mm'"  formControlName="StartDate"   />
@@ -51,8 +55,11 @@
     </div>
 
     <div class="text-center">
-        <button mat-raised-button color="primary" type="submit" [disabled]="!SurveyFormGroup.valid">Save</button>
+        <button mat-raised-button color="primary" type="submit"  [disabled]="!SurveyFormGroup.valid">Save</button>
+        <br>
+       
     </div>
   </form>
+    <button mat-raised-button color="primary"  (click)="GetQuestions()" class="mt-2 text-center mx-auto">Edit Questions</button>
   </div>
 

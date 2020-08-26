@@ -6,6 +6,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { SurveyComponent } from './Modules/survey/survey/survey.component';
 import { LoginComponent } from './Modules/authentication/login/login.component';
+import { PreviewSurveyComponent } from './Modules/survey/preview-survey/preview-survey.component';
 
 const routes: Routes = [
   {
@@ -24,6 +25,11 @@ canActivate:[AuthenticationGuard],
   path:'Questions',
   component:QuestionsComponent,
   canActivate:[AuthenticationGuard],
+ },
+ {
+   path:'PreView',
+   component:PreviewSurveyComponent,
+   canActivate:[AuthenticationGuard]
  }
 ];
 
