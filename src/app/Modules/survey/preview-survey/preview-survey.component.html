@@ -1,6 +1,8 @@
 <div class="container mt-3">
-<mat-card>
-
+<mat-card class="text-cnter">
+  <mat-card *ngIf="this.QuestionsFromServer?.length===0" class="text-cnter">
+    <mat-card-title class="text-cnter">No Questions Found</mat-card-title>
+  </mat-card>
 <div *ngFor="let Question of QuestionsFromServer;let j=index" class="mt-2">
     <mat-card>
     <mat-card-title><span>{{j+1}} ) </span>{{Question.questionMaster.qM_QuestionName}}</mat-card-title>

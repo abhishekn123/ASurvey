@@ -20,15 +20,21 @@ export class AuthenticationGuard implements CanActivate {
       console.log('Is token Expired',helper.isTokenExpired(Token))
        if(helper.isTokenExpired(Token))
        {
+        console.log(this.AuthenticationService.User)
         this.route.navigate(['/Login'])
          this.Alert.openSnackBar("Please Login","ok")
          this.Auth.signOut()
+         this.AuthenticationService.User=null;
+         this.AuthenticationService.removeToken()
          return false;
        }
        else
        return true;
     }
+    this.AuthenticationService.removeToken()
     this.Alert.openSnackBar("Please Login","ok")
+    this.AuthenticationService.User=null;
+    console.log(this.AuthenticationService.User)
     this.route.navigate(['/Login'])
     return false;
   }

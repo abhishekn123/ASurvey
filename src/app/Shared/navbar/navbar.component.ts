@@ -14,7 +14,7 @@ export class NavbarComponent implements OnInit {
   user: SocialUser;
   loggedIn: boolean;
   side:string='side'
-  constructor(private authService: SocialAuthService,private router:Router,private Auth:AuthenticationService) {
+  constructor(private authService: SocialAuthService,private router:Router,public Auth:AuthenticationService) {
     console.log('constructor called');
    
    }
@@ -28,21 +28,26 @@ export class NavbarComponent implements OnInit {
       {
         this.user = user;
         this.loggedIn = (user != null);
+        this.Auth.User=user;
       }
-    
       console.log('Subscribe called');
     },err=>
     {
+      this.Auth.User=null;
       console.log('err in auth state')
     });
-    this.authService.authState.subscribe((user) => {
-      this.user = user;
-      this.loggedIn = (user != null);
-    });
+    // this.authService.authState.subscribe((user) => {
+    //   this.user = user;
+    //   this.loggedIn = (user != null);
+    // });
   
   }
   Home()
   {
     this.router.navigate(['/Home'])
+  }
+  Report()
+  {
+    this.router.navigate(['/Report'])
   }
 }

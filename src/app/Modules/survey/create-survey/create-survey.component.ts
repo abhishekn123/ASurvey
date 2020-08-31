@@ -178,7 +178,7 @@ export class CreateSurveyComponent implements OnInit {
       StartDate: [{disabled:true,}, Validators.required],
       EndDate: [{disabled:true}, Validators.required],
       Department:['', Validators.required],
-    },{ validator:SurveyFromDateAndEndDateValidator });
+    },{ validator:SurveyCreationDateValidator });
   }
   Change()
   {
@@ -218,4 +218,23 @@ export const CustomDateValidator: ValidatorFn = (control: FormGroup): Validation
   //     return null
   //   }
   return null;
+}
+export const SurveyCreationDateValidator: ValidatorFn = (control: FormGroup): ValidationErrors | null => {
+  const StartDate = control.get('StartDate');
+  const EndDate = control.get('EndDate');
+    if (new Date(StartDate.value) > new Date(EndDate.value)   ) {
+      
+      return { MisMatch: true,Msg:'StartDate ShouldNot Exceed EndDate' };
+    }
+    else if(new Date(StartDate.value)<new Date(Date.now()) )
+    {
+      return { MisMatch: true,Msg:'StartDate Expired You Cant Set' };
+    } 
+    else if(new Date(EndDate.value)<new Date(Date.now()))
+    {
+      return { MisMatch: true,Msg:' Date Expired You cant Extend ' };
+    }
+    else {
+      return null
+    }
 }

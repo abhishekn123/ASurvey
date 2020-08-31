@@ -1,3 +1,4 @@
+import { ReportModule } from './Modules/report/report.module';
 import { httpInterceptorProviders } from './Interceptor/InterceptorProvider';
 import { AuthenticatonInterceptor } from './Interceptor/authenticaton.interceptor';
 import { MaterialModule } from './material/material.module';
@@ -32,6 +33,7 @@ import { AgGridModule } from 'ag-grid-angular';
     AuthenticationModule,
     MaterialModule,
     JwtModule,
+    ReportModule,
     AgGridModule.withComponents([])
   ],
   providers: [   {

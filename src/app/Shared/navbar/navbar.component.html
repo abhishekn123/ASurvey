@@ -1,45 +1,58 @@
-<mat-toolbar class="mat-elevation-z7 mat-toolbar" style="background-color: white;" >
-  <button mat-icon-button class="example-icon"  style="outline-color: white;" (click)="sidenav.toggle()">
+<mat-toolbar
+  class="mat-elevation-z7 mat-toolbar"
+  style="background-color: white"
+>
+  <button
+    mat-icon-button
+    class="example-icon"
+    style="outline-color: white"
+    (click)="sidenav.toggle()"
+  >
     <mat-icon>menu</mat-icon>
   </button>
   <a
-  class="navbar-brand p-0 mr-0"
-  asp-area=""
-  asp-controller="Home"
-  asp-action="Index"
->
-  <img
-    src="https://ivymobility.com/wp-content/uploads/2016/11/rsz_ivy_logo_2016.png"
-    width="70%"
-    height="70%"
-    alt=""
-    id="logo"
-  />
-</a>
+    class="navbar-brand p-0 mr-0"
+    asp-area=""
+    asp-controller="Home"
+    asp-action="Index"
+  >
+    <img
+      src="https://ivymobility.com/wp-content/uploads/2016/11/rsz_ivy_logo_2016.png"
+      width="70%"
+      height="70%"
+      alt=""
+      id="logo"
+    />
+  </a>
   <div class="ml-auto">
-    <div *ngIf="user" >
-      <app-profile-component [url]="user.photoUrl" [Email]="user.email"></app-profile-component>
+    <div *ngIf="this.Auth.User!=null">
+      <app-profile-component
+      ></app-profile-component>
     </div>
-    <div *ngIf="!loggedIn" class="pt-1 pr-2">
+    <div *ngIf="this.Auth.User==null" class="pt-1 pr-2">
       <app-google-button></app-google-button>
     </div>
   </div>
 </mat-toolbar>
 
-  <mat-sidenav-container [hasBackdrop]="true" style="height: 100%;" class="sidenav-container"  >
-    <mat-sidenav mode="over" >
-      <mat-selection-list [multiple]="false">
-        <mat-list-option style="text-align: center;" (click)="Home()">
-          Home
-        </mat-list-option>
-        <mat-divider></mat-divider>
-        <mat-list-option (click)="navigate()">
-         Create Survey
-        </mat-list-option>
-        <mat-divider></mat-divider>
-      </mat-selection-list>
-    </mat-sidenav>
-    <mat-sidenav-content fixedInViewport="false"  >
-      <router-outlet></router-outlet>
-    </mat-sidenav-content>
-  </mat-sidenav-container>
+<mat-sidenav-container
+  [hasBackdrop]="true"
+  style="height: 100%"
+  class="sidenav-container"
+>
+  <mat-sidenav mode="over">
+    <mat-selection-list [multiple]="false">
+      <mat-list-option style="text-align: center" (click)="Home()">
+        Home
+      </mat-list-option>
+      <mat-divider></mat-divider>
+      <mat-list-option (click)="navigate()"  style="text-align: center"> Create Survey </mat-list-option>
+      <mat-divider></mat-divider>
+      <mat-list-option  style="text-align: center" (click)="Report()"> Report </mat-list-option>
+      <mat-divider></mat-divider>
+    </mat-selection-list>
+  </mat-sidenav>
+  <mat-sidenav-content fixedInViewport="false">
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

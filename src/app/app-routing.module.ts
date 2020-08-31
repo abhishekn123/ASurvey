@@ -1,3 +1,4 @@
+import { UserResponseReportComponent } from './Modules/report/user-response-report/user-response-report.component';
 import { CreateQuestionComponent } from './Modules/survey/create-question/create-question.component';
 import { QuestionsComponent } from './Modules/survey/questions/questions.component';
 import { AuthenticationGuard } from './Guards/authentication.guard';
@@ -29,6 +30,11 @@ canActivate:[AuthenticationGuard],
  {
    path:'PreView',
    component:PreviewSurveyComponent,
+   canActivate:[AuthenticationGuard]
+ },
+ {
+   path:'Report',
+   component:UserResponseReportComponent,
    canActivate:[AuthenticationGuard]
  }
 ];

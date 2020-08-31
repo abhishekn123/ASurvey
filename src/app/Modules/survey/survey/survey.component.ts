@@ -1,3 +1,5 @@
+import { CompletionReport } from './../../report/Models/UserResponseModel';
+import { ReportService } from './../../report/Services/report.service';
 import { SurveyMaster } from './../Models/SurveyModel';
 import { AlertManagerService } from 'src/app/Helpers/alert-manager.service';
 import { DepartmentIdConverterPipe } from './../../../Pipes/department-id-converter.pipe';
@@ -58,7 +60,7 @@ export class SurveyComponent implements OnInit {
   SelectedDepartmentId:number;
   SurveyName;
    SurveyArray:SurveyData[];
-     constructor(private SurveyService:SurveyService,public dialog: MatDialog,  private route: Router,private Alert:AlertManagerService) { 
+     constructor(private report:ReportService,private SurveyService:SurveyService,public dialog: MatDialog,  private route: Router,private Alert:AlertManagerService) { 
    
      }
      createFilter(): (data: any, filter: string) => boolean {
@@ -80,25 +82,24 @@ export class SurveyComponent implements OnInit {
         this.Departments=data["departments"];
       })
   }
+  getCompletionReport(element)
+  {
+   this.report.GetCompletionReport(element).subscribe((data:CompletionReport[])=>
+    {
+      const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(data);
+      const workbook: XLSX.WorkBook = {Sheets: {'data': worksheet}, SheetNames: ['data']};
+      XLSX.writeFile(workbook,"CompletionReport.xlsx");
+    },err=>
+    {
+      this.Alert.openSnackBar("Something Went Wrong","ok");
+    })
+  }
   ClearSearch()
   {
     this.dataSource = new MatTableDataSource<any>(this.SurveyArray); 
     this.dataSource.paginator=this.paginator;
     this.DataLength=this.dataSource.data.length;
   }
-  // SearchByDepartmentChange()
-  // {
-  //   let newState = this.dataSource.filter(exp=>exp.dM_Id===this.SelectedDepartmentId);
-  //   this.dataSource=new MatTableDataSource<any>(newState); 
-  //   this.dataSource.paginator=this.paginator;
-  // }
-  // SearchBySurveyName()
-  // {
-  //   let newState =this.SurveyArray.filter(exp=>exp.sM_Name.startsWith(this.SurveyName));
-  //   this.dataSource=new MatTableDataSource<any>(newState); 
-  //   this.dataSource.paginator=this.paginator;
-
-  // }
  sortedData:SurveyData[];
   sortData(sort:Sort)
   {

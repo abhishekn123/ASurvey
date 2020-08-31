@@ -1,8 +1,8 @@
 <div  class="text-right mx-auto pt-2 rounded-circle" style="cursor: pointer;" >
-      <img [src]="url " class="rounded-circle" matRipple  width="40%" height="40%" [matMenuTriggerFor]="menu"  />
+      <img [src]="this.Auth.User.photoUrl" class="rounded-circle" matRipple  width="40%" height="40%" [matMenuTriggerFor]="menu"  />
 </div>
   <mat-menu #menu="matMenu" >
-    <button mat-menu-item style="outline-color: white;">{{Email || ''}}</button>
+    <button mat-menu-item style="outline-color: white;">{{this.Auth.User.email?this.Auth.User.email:''}}</button>
     <mat-divider></mat-divider>
     <button mat-menu-item style="outline-color: white;text-align: center;" (click)="logout()">Logout</button>
   </mat-menu>

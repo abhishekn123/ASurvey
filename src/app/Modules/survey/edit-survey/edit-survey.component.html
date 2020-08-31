@@ -34,7 +34,7 @@
     <div class="form-group mt-2 text-left">
       <label for="EndDate">EndDate</label><br>
       <input type="datetime-local"   [ngModel]="this.data.endDate | date:'yyyy-MM-ddTHH:mm'"   formControlName="EndDate" [min]="todayDate"  id="EndDate" aria-describedby="End Date" >
-      <mat-error style="font-size: 12px;text-align: center;" class="text-left" *ngIf="this.SurveyFormGroup.errors?.MisMatch">StartDate Shouldnot Exceed EndDate</mat-error>
+      <mat-error style="font-size: 12px;text-align: center;" class="text-left" *ngIf="this.SurveyFormGroup.errors?.MisMatch">{{this.SurveyFormGroup.errors.Msg}}</mat-error>
     </div>
     <!-- <div>
       <input type="datetime-local" [ngModel]="this.data.startDate | date:'yyyy-MM-ddTHH:mm'"  formControlName="StartDate"   />

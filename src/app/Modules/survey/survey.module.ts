@@ -21,7 +21,7 @@ import { PreviewSurveyComponent } from './preview-survey/preview-survey.componen
   imports: [
 CommonModule,MaterialModule,HttpClientModule,ReactiveFormsModule,FormsModule,TableModule
   ],
-  declarations: [DepartmentIdConverterPipe,SurveyComponent, QuestionsComponent, CreateSurveyComponent, EditSurveyComponent, DeleteSurveyComponent, SurveyDateValidatorDirective,SurveyDateValidatorDirective, DeleteOptionComponent, CreateOptionComponent, CreateQuestionComponent, DeleteQuestionComponent, SearchSurveyComponent, PreviewSurveyComponent ],
+  declarations: [DepartmentIdConverterPipe,SurveyComponent, QuestionsComponent, CreateSurveyComponent, EditSurveyComponent, DeleteSurveyComponent, SurveyDateValidatorDirective,SurveyDateValidatorDirective, DeleteOptionComponent, CreateOptionComponent, CreateQuestionComponent, DeleteQuestionComponent, SearchSurveyComponent, PreviewSurveyComponent],
   exports:[SurveyComponent,QuestionsComponent,CreateSurveyComponent ],
   entryComponents:[EditSurveyComponent,DeleteSurveyComponent,CreateSurveyComponent,DeleteOptionComponent,CreateOptionComponent,CreateQuestionComponent,DeleteQuestionComponent]
 })
