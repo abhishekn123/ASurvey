@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { AlertManagerService } from 'src/app/Helpers/alert-manager.service';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { QuestionServerViewModel } from '../questions/questions.component';
 import { SurveyMaster } from '../Models/SurveyModel';
 
@@ -17,7 +17,8 @@ export class PreviewSurveyComponent implements OnInit {
   IsUpdateDisabled:Boolean;
   surveyMaster:SurveyMaster;
   surveyId:number;
-  constructor(private route:ActivatedRoute,public dialog: MatDialog,private Alert:AlertManagerService,private _formBuilder: FormBuilder,private SurveyService:SurveyService) { }
+  Loading:Boolean;
+  constructor(private router:Router,private route:ActivatedRoute,public dialog: MatDialog,private Alert:AlertManagerService,private _formBuilder: FormBuilder,private SurveyService:SurveyService) { }
   ngOnInit(): void {
     this.route
     .queryParams
@@ -29,14 +30,21 @@ export class PreviewSurveyComponent implements OnInit {
     });
     console.log(this.surveyMaster);
   }
+  GoToHome():void
+  {
+    this.router.navigate(['/Home'])
+  }
   GetSurveyQuestions(survey:SurveyMaster)
   {
+    this.Loading=true;
     this.SurveyService.GetSurveyQuestions(survey).subscribe(data=>
       {
+        this.Loading=false;
         console.log('data from The Server',data);
         this.QuestionsFromServer=<QuestionServerViewModel[]>data;
       },err=>
       {
+        this.Loading=false;
         console.log(err);
       })
   }

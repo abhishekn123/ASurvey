@@ -1,5 +1,8 @@
-
 <div class="container mt-3">
+<mat-spinner style="margin: 0 auto;" *ngIf="Loading"></mat-spinner>
+</div>
+<div class="container mt-3"  *ngIf="!Loading">
+
 <mat-card style="width: 100%;" class="text-center">
 <div *ngFor="let Question of QuestionsFromServerArray;let QuestionIndex=index" style="width: 100%;">
   <mat-card style="margin-top: 20px;width: 80%;" class="mx-auto pt-0 text-left">

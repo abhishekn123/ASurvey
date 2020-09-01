@@ -49,7 +49,7 @@ export class EditSurveyComponent implements OnInit {
   UpdateSurvey():void
   {
     console.log('Date from Function',this.createDateAsUTC(new Date(this.SurveyData.startDate)),this.SurveyData.startDate)
-    this.SurveyService.UpdateSurvey({"SM_Id":this.SurveyData.sM_Id,"SM_Name":this.SurveyFormGroup.get('name').value,"StartDate":this.createDateAsUTC(new Date(this.SurveyFormGroup.get('StartDate').value)),"EndDate":this.createDateAsUTC(new Date(this.SurveyFormGroup.get('EndDate').value)),"DM_ID":this.SurveyFormGroup.get('Department').value}).subscribe(data=>
+    this.SurveyService.UpdateSurvey({"SM_Id":this.SurveyData.sM_Id,"SM_Name":this.SurveyFormGroup.get('name').value,"StartDate":this.SurveyFormGroup.get('StartDate').value,"EndDate":this.SurveyFormGroup.get('EndDate').value,"DM_ID":this.SurveyFormGroup.get('Department').value}).subscribe(data=>
       {
         this.Alert.openSnackBar("Updated Sucessfully","Ok")
       },(err: HttpErrorResponse)=>

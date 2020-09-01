@@ -1,6 +1,10 @@
 <div class="container mt-3">
+  <mat-spinner style="margin: 0 auto;" *ngIf="Loading"></mat-spinner>
 <mat-card class="text-cnter">
-  <mat-card *ngIf="this.QuestionsFromServer?.length===0" class="text-cnter">
+  <button mat-fab color="warn" aria-label="Example icon button with a home icon" style="outline-color: #ffffff;outline-width: 0px;" (click)="GoToHome()">
+    <mat-icon>home</mat-icon>
+  </button>
+  <mat-card *ngIf="this.QuestionsFromServer?.length===0 && !Loading" class="text-cnter">
     <mat-card-title class="text-cnter">No Questions Found</mat-card-title>
   </mat-card>
 <div *ngFor="let Question of QuestionsFromServer;let j=index" class="mt-2">

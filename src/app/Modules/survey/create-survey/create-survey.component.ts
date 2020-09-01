@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { AlertManagerService } from './../../../Helpers/alert-manager.service';
 import { Departments, SurveyFromDateAndEndDateValidator } from './../edit-survey/edit-survey.component';
 import { SurveyService } from './../Service/survey.service';
@@ -151,7 +152,7 @@ export class CreateSurveyComponent implements OnInit {
    tomorrow:Date ;
   presentDate:Date=new Date();
   nextDate:Date=this.todayDate;
-  constructor(private _formBuilder: FormBuilder,private SurveyService:SurveyService,private Alertmanager:AlertManagerService ) {
+  constructor(private router:Router,private _formBuilder: FormBuilder,private SurveyService:SurveyService,private Alertmanager:AlertManagerService ) {
    }
    Departments:Departments[];
    SelectedDepartmentId:number;
@@ -195,6 +196,7 @@ export class CreateSurveyComponent implements OnInit {
     this.SurveyService.SurveyBulkInsert(SurveyData).subscribe(data=>
       { this.Loader=false;
         this.Alertmanager.openSnackBar("Survey Created SucessFully","OK")
+        this.router.navigate(['/Home'])
       },err=>
       { this.Loader=false;
         this.Alertmanager.openSnackBar("Something Went Wrong","OK")

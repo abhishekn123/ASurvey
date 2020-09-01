@@ -27,6 +27,7 @@ export class QuestionsComponent implements OnInit {
   IsUpdateDisabled:Boolean;
   surveyMaster:SurveyMaster;
   surveyId:number;
+  Loading:Boolean;
   questions: QuestionType[] = [
     { value: 'RadioButton', viewValue: 'RadioButton' },
     { value: 'CheckBox', viewValue: 'CheckBox' },
@@ -35,6 +36,7 @@ export class QuestionsComponent implements OnInit {
   ];
   GetSurveyQuestions(survey:SurveyMaster)
   {
+    this.Loading=true;
     this.SurveyService.GetSurveyQuestions(survey).subscribe(data=>
       {
         console.log('data from The Server',data);
@@ -42,9 +44,11 @@ export class QuestionsComponent implements OnInit {
         this.QuestionsFromServerArray=[];
         console.log('Questions From Server',this.QuestionsFromServer)
         this.initServerDate()
+        this.Loading=false;
       },err=>
       {
         console.log(err);
+        this.Loading=false
       })
   }
   // -------------------------------------------------------------//

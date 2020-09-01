@@ -179,6 +179,7 @@ export class SurveyComponent implements OnInit {
      console.log("Delete Survey Id is",Survey);
      const dialogRef = this.dialog.open(DeleteSurveyComponent,{data:Survey});
      dialogRef.afterClosed().subscribe(result => {
+       console.log('Survey Deletion Called')
       this.GetAllSurveys();
    });
   }
@@ -193,10 +194,11 @@ export class SurveyComponent implements OnInit {
         
         if(result.startDate!=="")
         {
-           if(new Date(exp.startDate).getDate()>=new Date(result.startDate).getDate())
+           if(new Date(exp.startDate)>=new Date(result.startDate))
            {
             return exp;
            }
+        
     
         }
         else
@@ -207,7 +209,7 @@ export class SurveyComponent implements OnInit {
         {
           if(result.endDate!=="")
           {
-             if(new Date(exp.endDate).getDate()<=new Date(result.endDate).getDate())
+             if(new Date(exp.endDate)<=new Date(result.endDate))
              {
               return exp;
              }
