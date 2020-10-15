@@ -17,7 +17,11 @@ import {
 } from 'angularx-social-login';
 import { JwtModule } from "@auth0/angular-jwt";
 import { AgGridModule } from 'ag-grid-angular';
+const googleLoginOptions = {
+  scope: 'email profile',
+  access_type:'offline'
 
+}
 
 @NgModule({
   declarations: [
@@ -44,7 +48,7 @@ import { AgGridModule } from 'ag-grid-angular';
         {
           id: GoogleLoginProvider.PROVIDER_ID,
           provider: new GoogleLoginProvider(
-            '471172821639-k4ee78c4kqq22pj7n8580hp2o5jqa5gk.apps.googleusercontent.com'
+            '471172821639-k4ee78c4kqq22pj7n8580hp2o5jqa5gk.apps.googleusercontent.com',googleLoginOptions
           ),
         },],
     } as SocialAuthServiceConfig,

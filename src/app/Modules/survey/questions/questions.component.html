@@ -4,7 +4,10 @@
 <div class="container mt-3"  *ngIf="!Loading">
 
 <mat-card style="width: 100%;" class="text-center">
-<div *ngFor="let Question of QuestionsFromServerArray;let QuestionIndex=index" style="width: 100%;">
+  <div class="mr-auto text-left">
+    <button mat-fab color="warn"  aria-label="Example icon button with a home icon" style="outline-color: #ffffff;outline-width: 0px;margin-right: auto;" (click)="GoToHome()"><mat-icon>home</mat-icon></button>
+  </div>
+    <div *ngFor="let Question of QuestionsFromServerArray;let QuestionIndex=index" style="width: 100%;">
   <mat-card style="margin-top: 20px;width: 80%;" class="mx-auto pt-0 text-left">
     <div class="row">
       <div class="col pl-0">
@@ -43,7 +46,7 @@
         [required]="true" >
         <mat-error>Option Name Required</mat-error>
     </mat-form-field>
-    <button  (click)="RemoveOption(Question.get('SurveId').value,Question.get('QuestionId').value,optionArray.controls['oM_Id'].value)" mat-raised-button color="accent">Remove</button><br>
+    <!-- <button  (click)="RemoveOption(Question.get('SurveId').value,Question.get('QuestionId').value,optionArray.controls['oM_Id'].value)" mat-raised-button color="accent">Remove</button><br> -->
     <button class="mt-2" *ngIf="i=== Question.get('OptionMaster')['controls'].length-1" (click)="UpdateQuestion(QuestionIndex)" mat-raised-button color="primary" [disabled]=" Question.get('QuestionName').invalid" >UpdateQuestion</button><br>
    </form>
   </div>

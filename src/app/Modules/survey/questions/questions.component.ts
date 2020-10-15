@@ -12,7 +12,7 @@ import {MatDialog} from '@angular/material/dialog';
 import { QuestionMaster } from '../Models/QuestionModel';
 import { DeleteQuestionComponent } from '../delete-question/delete-question.component';
 import { QuestionType } from '../create-survey/create-survey.component';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 @Component({
   selector: 'app-questions',
@@ -20,7 +20,7 @@ import { Location } from '@angular/common';
   styleUrls: ['./questions.component.css']
 })
 export class QuestionsComponent implements OnInit {
-  constructor(private location:Location,private route:ActivatedRoute,public dialog: MatDialog,private Alert:AlertManagerService,private _formBuilder: FormBuilder,private SurveyService:SurveyService) { }
+  constructor(private router:Router,private location:Location,private route:ActivatedRoute,public dialog: MatDialog,private Alert:AlertManagerService,private _formBuilder: FormBuilder,private SurveyService:SurveyService) { }
   QuestionsFromServerArray=[];
   QuestionGroup:FormGroup[]=[]
   QuestionsFromServer:QuestionServerViewModel[];
@@ -34,6 +34,11 @@ export class QuestionsComponent implements OnInit {
     { value: 'DropDown', viewValue: 'DropDown' },
     { value: 'List', viewValue: 'List' },
   ];
+  GoToHome()
+  {
+  this.router.navigate(['/Home']);
+
+  }
   GetSurveyQuestions(survey:SurveyMaster)
   {
     this.Loading=true;
